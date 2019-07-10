@@ -1,6 +1,9 @@
-package com.dong.designMode;
+package com.dong.designMode.factoryPattern;
 
-public class ShapeFactory extends AbstractFactory{
+import com.dong.designMode.abstractFactoryPattern.AbstractFactory;
+import com.dong.designMode.abstractFactoryPattern.Color;
+
+public class ShapeFactory extends AbstractFactory {
 
     public Color getColor(String colorType) {
         return null;

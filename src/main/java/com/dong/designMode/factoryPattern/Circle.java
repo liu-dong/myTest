@@ -1,4 +1,4 @@
-package com.dong.designMode;
+package com.dong.designMode.factoryPattern;
 
 public class Circle implements Shape {
     public void draw() {

@@ -1,4 +1,4 @@
-package com.dong.designMode;
+package com.dong.designMode.abstractFactoryPattern;
 
 public class Red implements Color {
     public void fill() {

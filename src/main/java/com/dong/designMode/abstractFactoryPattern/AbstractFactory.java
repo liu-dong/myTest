@@ -1,4 +1,6 @@
-package com.dong.designMode;
+package com.dong.designMode.abstractFactoryPattern;
+
+import com.dong.designMode.factoryPattern.Shape;
 
 public abstract class AbstractFactory {
 

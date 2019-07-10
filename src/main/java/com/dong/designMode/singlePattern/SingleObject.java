@@ -1,4 +1,4 @@
-package com.dong.designMode;
+package com.dong.designMode.singlePattern;
 
 public class SingleObject {
 

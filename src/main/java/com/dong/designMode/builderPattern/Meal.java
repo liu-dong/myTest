@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 一个套餐
+ * 一个套餐 套餐里会有多种食物
  */
 public class Meal {
+
     private List<Item> items = new ArrayList<Item>();
 
     //添加套餐的组成
-    public void addItem(Item item){
+    void addItem(Item item){
         items.add(item);
     }
 

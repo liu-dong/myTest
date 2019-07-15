@@ -1,8 +1,5 @@
 package com.dong.designMode;
 
-import com.dong.designMode.builderPattern.Meal;
-import com.dong.designMode.builderPattern.MealBuilder;
-
 public class DesignMode {
     public static void main(String[] args) {
 
@@ -41,6 +38,7 @@ public class DesignMode {
         object.showMessage();
         */
 
+        /*
         //建造者模式
         MealBuilder mealBuilder = new MealBuilder();//实例化一个选择食物套餐类型的对象
 
@@ -53,6 +51,15 @@ public class DesignMode {
         System.out.println("肉食");
         nonMeal.showItems();
         System.out.println("总共花费：" + nonMeal.getCost());
+        */
 
+        /*
+        //适配器模式
+        AudioPlayer audioPlayer = new AudioPlayer();
+        audioPlayer.play("mp3", "beyond the horizon.mp3");
+        audioPlayer.play("mp4", "alone.mp4");
+        audioPlayer.play("vlc", "far far away.vlc");
+        audioPlayer.play("avi", "mind me.avi");
+        */
     }
 }

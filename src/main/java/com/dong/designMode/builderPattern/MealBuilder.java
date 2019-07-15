@@ -1,11 +1,11 @@
 package com.dong.designMode.builderPattern;
 
 /**
- * 构建一个食物套餐
+ * 表示食物套餐选择  有素食套餐、肉食套餐
  */
 public class MealBuilder {
 
-    //素食套餐
+    //素食套餐 不同套餐的组合
     public Meal prepareVegMeal(){
         Meal meal = new Meal();
         meal.addItem(new VegBurger());//给套餐内添加啊食物
@@ -13,7 +13,7 @@ public class MealBuilder {
         return meal;
     }
 
-    //肉食套餐
+    //肉食套餐 不同套餐的组合
     public Meal prepareNonMeal(){
         Meal meal = new Meal();
         meal.addItem(new ChickenBurger());

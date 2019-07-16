@@ -1,11 +1,5 @@
 package com.dong.designMode;
 
-import com.dong.designMode.decoratorPattern.RedShapeDecorator;
-import com.dong.designMode.decoratorPattern.ShapeDecorator;
-import com.dong.designMode.factoryPattern.Circle;
-import com.dong.designMode.factoryPattern.Rectangle;
-import com.dong.designMode.factoryPattern.Shape;
-
 public class DesignMode {
     public static void main(String[] args) {
 
@@ -68,7 +62,7 @@ public class DesignMode {
         audioPlayer.play("avi", "mind me.avi");
         */
 
-
+        /*
         //装饰器模式
         Shape circle = new Circle();
         ShapeDecorator redCircle = new RedShapeDecorator(new Circle());
@@ -83,5 +77,15 @@ public class DesignMode {
 
         System.out.println("Rectangle of red border");
         redRectangle.draw();
+        */
+
+        /*
+        //代理模式
+        Image image = new ProxyImage("dong.gif");
+        // 图像将从磁盘加载
+        image.display();
+        // 图像不需要从磁盘加载
+        image.display();
+        */
     }
 }

@@ -1,5 +1,7 @@
 package com.dong.designMode;
 
+import com.dong.designMode.singlePattern.SingleObject;
+
 public class DesignMode {
     public static void main(String[] args) {
 
@@ -32,11 +34,11 @@ public class DesignMode {
         colorBlue.fill();
         */
 
-        /*
+
         //单例模式
         SingleObject object = SingleObject.getInstance();
         object.showMessage();
-        */
+
 
         /*
         //建造者模式

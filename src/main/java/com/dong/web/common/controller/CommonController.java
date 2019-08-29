@@ -26,7 +26,7 @@ public class CommonController {
 //        return "WEB-INF/page/common/"+folder;
 //        return "WEB-INF/page/"+page+"/"+folder+".jsp";
         ModelAndView view = new ModelAndView();
-        view.setViewName("WEB-INF/page/"+page+"/"+folder+".jsp");
+        view.setViewName(page+"/"+folder+".jsp");
         return view;
     }
 

@@ -3,8 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>HTML</title>
+    <script src="/plugin/vue.min.js"></script>
 </head>
 <body>
 <h1>附件上传</h1>
+<div id="fileUpload" align="center">
+    <table border="1">
+        <span>
+            {{ fileTypeList }}<br>
+        </span>
+        <thead>
+        <tr>
+            <th width="4%">序号</th>
+            <th width="76%">附件材料</th>
+            <th width="20%">操作</th>
+        </tr>
+        </thead>
+        <tbody v-for="(fileList,index) in fileTypeList">
+        <tr>
+            <td >{{ index+1 }}</td>
+            <td :title="fileList.fileTypeName" style="text-align: left;">{{ fileList.fileTypeName  }}</td>
+            <td>
+                <button type="button" @click="openUpload(fileList.fileType)">上传</button>
+            </td>
+        </tr>
+        <tr v-for="(file,index) in fileList.files">
+            <td colspan="3">
+                <span>{{ file.fileTypeName }}</span>
+                <button type="button">下载</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br>
+    <form action="/common/upload" method="post" enctype="multipart/form-data">
+        <div>
+            <label>username</label>
+            <label>
+                <input type="text" name="username"/>
+            </label>
+            <input type="file" name="file" value="文件上传"/>
+            <br>
+            <input type="submit" name="submit" value="提交">
+        </div>
+    </form>
+</div>
+
 </body>
+<script>
+    var vm = new Vue({
+        el: '#fileUpload',
+        data: {
+            fileTypeList: [],
+        },
+        methods: {
+            openUpload: function(fileType) {
+                alert(fileType);
+            }
+        }
+    });
+    vm.fileTypeList = [
+        {"fileType":"fileType_01","fileTypeName":"文件类型一"},
+        {"fileType":"fileType_01","fileTypeName":"文件类型二"},
+        {"fileType":"fileType_01","fileTypeName":"文件类型三"},
+        {"fileType":"fileType_01","fileTypeName":"文件类型四"},
+    ]
+</script>
 </html>

@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: 3hld
@@ -12,6 +13,6 @@
 </head>
 <body>
 <h1>hello world!</h1>
-<a href="${pageContext.request.contextPath}/page/fileUpload">附件上传</a>
+<a href="${pageContext.request.contextPath}/page/goFileUpload">附件上传</a>
 </body>
 </html>

@@ -38,7 +38,7 @@
     <br>
     <br>
     <br>
-    <form action="/common/upload" method="post" enctype="multipart/form-data">
+    <form action="/common/uploadThird" method="post" enctype="multipart/form-data">
         <div>
             <label>username</label>
             <label>
@@ -56,7 +56,7 @@
     var vm = new Vue({
         el: '#fileUpload',
         data: {
-            fileTypeList: [],
+            fileTypeList: []
         },
         methods: {
             openUpload: function(fileType) {
@@ -68,7 +68,7 @@
         {"fileType":"fileType_01","fileTypeName":"文件类型一"},
         {"fileType":"fileType_01","fileTypeName":"文件类型二"},
         {"fileType":"fileType_01","fileTypeName":"文件类型三"},
-        {"fileType":"fileType_01","fileTypeName":"文件类型四"},
+        {"fileType":"fileType_01","fileTypeName":"文件类型四"}
     ]
 </script>
 </html>

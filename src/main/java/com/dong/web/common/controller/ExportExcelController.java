@@ -14,6 +14,10 @@ import java.util.List;
 
 /**
  * 导出excel
+ * 一个Excel文件对应于一个workbook(HSSFWorkbook)，
+ * 一个workbook可以有多个sheet（HSSFSheet）组成，
+ * 一个sheet是由多个row（HSSFRow）组成，
+ * 一个row是由多个cell（HSSFCell）组成
  */
 public class ExportExcelController {
 
@@ -33,6 +37,13 @@ public class ExportExcelController {
      */
     public static <T> void exportExcel(HttpServletResponse response, String title, String[] headers, List<T> list, List<String> containBean) {
         try {
+            /*
+                1：用HSSFWorkbook打开或者创建"Excel文件对象"
+                2：用HSSFWorkbook返回或者创建HSSFSheet对象
+                3：用HSSFSheet对象返回或者创建HSSFRow对象
+                4：用HSSFRow对象返回或者创建HSSFCell对象
+                5：对HSSFCell对象进行读写
+             */
             HSSFWorkbook workbook = new HSSFWorkbook(); // 创建一个Excel文件
             HSSFSheet sheet = workbook.createSheet(title);// 创建一个Excel的Sheet
             HSSFRow row = sheet.createRow(0);
@@ -57,13 +68,13 @@ public class ExportExcelController {
                             if (!field.getName().equals(containBean.get(j)))
                                 continue;
                             /*给每一列set值*/
-                            setCellValue(t, field, row, j);
+//                            setCellValue(t, field, row, j);
                         }
                     }
                 } else {
                     for (int i = 0; i < fields.length; i++) {
                         Field field = fields[i];
-                        setCellValue(t, field, row, i);
+//                        setCellValue(t, field, row, i);
                     }
                 }
             }
@@ -75,9 +86,28 @@ public class ExportExcelController {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (workbook != null) {
-                workbook.close();
-            }
+//            if (workbook != null) {
+//                workbook.close();
+//            }
         }
     }
+
+    /**
+     * 检查数据配置问题
+     *
+     * @throws IOException 抛出数据异常类
+     */
+    /*protected void checkConfig() throws IOException {
+        if (heardKey == null || heardList.length == 0) {
+            throw new IOException("列名数组不能为空或者为NULL");
+        }
+
+        if (fontSize < 0 || rowHeight < 0 || columWidth < 0) {
+            throw new IOException("字体、宽度或者高度不能为负值");
+        }
+
+        if (Strings.isNullOrEmpty(sheetName)) {
+            throw new IOException("工作表表名不能为NULL");
+        }
+    }*/
 }

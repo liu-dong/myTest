@@ -252,13 +252,13 @@ public class CurrentDateUtils {
         int currentMonth = c.get(Calendar.MONTH) + 1;
         Date now = null;
         try {
-            if (currentMonth >= 1 && currentMonth <= 3)
+            if (currentMonth <= 3)
                 c.set(Calendar.MONTH, 0);
-            else if (currentMonth >= 4 && currentMonth <= 6)
+            else if (currentMonth <= 6)
                 c.set(Calendar.MONTH, 3);
-            else if (currentMonth >= 7 && currentMonth <= 9)
+            else if (currentMonth <= 9)
                 c.set(Calendar.MONTH, 4);
-            else if (currentMonth >= 10 && currentMonth <= 12)
+            else if (currentMonth <= 12)
                 c.set(Calendar.MONTH, 9);
             c.set(Calendar.DATE, 1);
             now = sdfDateTime.parse(sdfDate.format(c.getTime()) + " 00:00:00");
@@ -279,16 +279,16 @@ public class CurrentDateUtils {
         int currentMonth = c.get(Calendar.MONTH) + 1;
         Date now = null;
         try {
-            if (currentMonth >= 1 && currentMonth <= 3) {
+            if (currentMonth <= 3) {
                 c.set(Calendar.MONTH, 2);
                 c.set(Calendar.DATE, 31);
-            } else if (currentMonth >= 4 && currentMonth <= 6) {
+            } else if (currentMonth <= 6) {
                 c.set(Calendar.MONTH, 5);
                 c.set(Calendar.DATE, 30);
-            } else if (currentMonth >= 7 && currentMonth <= 9) {
+            } else if (currentMonth <= 9) {
                 c.set(Calendar.MONTH, 8);
                 c.set(Calendar.DATE, 30);
-            } else if (currentMonth >= 10 && currentMonth <= 12) {
+            } else if (currentMonth <= 12) {
                 c.set(Calendar.MONTH, 11);
                 c.set(Calendar.DATE, 31);
             }

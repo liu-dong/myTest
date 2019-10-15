@@ -9,152 +9,143 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 导出excel工具类
+ * 可设置参数 ：文件名 工作表名 表标题(必须) 表头名称(必须)
+ *              表头元素key值(必须) 数据列表 内容字体大小 行高 列宽
+ */
 public class ExcelExportUtil {
 
+    private String fileName = String.valueOf(System.currentTimeMillis());//默认文件名
 
-    //工作表
-    private String sheetName = "sheet";
-    //表标题
-    private String title;
-    //各个列的表头
-    private String[] heardList;
-    //各个列的元素key值
-    private String[] heardKey;
-    //需要填充的数据信息
-    private List<Map> data;
-    //字体大小
-    private int fontSize = 14;
-    //行高
-    private int rowHeight = 30;
-    //列宽
-    private int columnWidth = 200;
+    private String sheetName = "sheet"; //工作表名
+
+    private String title;//表标题
+
+    private String[] headerList;//各个列的表头名称
+
+    private String[] headerKey;//各个列的元素key值
+
+    private List<Map<String, Object>> dataList;//需要填充的数据列表
+
+    private int fontSize = 14;//字体大小——内容字体大小 < 表头字体大小 < 标题字体大小（递增2）
+
+    private int rowHeight = 30;//行高
+
+    private int columnWidth = 20;//列宽
 
     /**
      * 开始导出数据信息
      */
-    public byte[] exportExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public byte[] exportExport(HttpServletResponse response) throws IOException {
         //检查参数配置信息
         checkConfig();
-        //创建工作簿
+        //创建HSSFWorkbook对象
         HSSFWorkbook wb = new HSSFWorkbook();
-        //创建工作表
-        HSSFSheet sheet = wb.createSheet(this.sheetName);
-        //设置默认行宽
-        sheet.setDefaultColumnWidth(this.columnWidth);
-        // 标题样式（加粗，垂直居中）
+        //创建HSSFSheet对象
+        HSSFSheet sheet = wb.createSheet("sheet");
+        sheet.setDefaultColumnWidth(this.columnWidth);//默认列宽
+
+        //标题样式（加粗，垂直居中）
+        HSSFCellStyle titleStyle = wb.createCellStyle();
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+        //标题字体样式
+        HSSFFont titleFontStyle = wb.createFont();
+        titleFontStyle.setBold(true);   //加粗
+        titleFontStyle.setFontHeightInPoints((short) (this.fontSize+4));  //设置标题字体大小
+        titleStyle.setFont(titleFontStyle);
+
+        //表头样式（加粗，垂直居中）
+        HSSFCellStyle headerStyle = wb.createCellStyle();
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+        //表头字体样式
+        HSSFFont headerFontStyle = wb.createFont();
+        headerFontStyle.setBold(true);   //加粗
+        headerFontStyle.setFontHeightInPoints((short) (this.fontSize+2));  //设置表头字体大小
+        headerStyle.setFont(headerFontStyle);
+
+
+        //单元格样式
         HSSFCellStyle cellStyle = wb.createCellStyle();
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
-        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-        //字体样式
-        HSSFFont fontStyle = wb.createFont();
-//        fontStyle.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//粗体显示
-        fontStyle.setBold(true);   //加粗
-        fontStyle.setFontHeightInPoints((short)16);  //设置标题字体大小
-        cellStyle.setFont(fontStyle);
+        //单元格字体样式（字体红色）
+        HSSFFont cellFontStyle = wb.createFont();
+        cellFontStyle.setColor(HSSFColor.DARK_RED.index);   //设置字体颜色 (红色)
+        cellFontStyle.setFontHeightInPoints((short) this.fontSize);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setFont(cellFontStyle);
 
-        //在第0行创建rows  (表标题)
-        HSSFRow title = sheet.createRow(0);
-        title.setHeightInPoints(30);//行高
-        HSSFCell cellValue = title.createCell(0);
-        cellValue.setCellValue(this.title);
-        cellValue.setCellStyle(cellStyle);
-        sheet.addMergedRegion(new CellRangeAddress(0,0,0,(this.heardList.length-1)));
+        //单元格样式2
+        HSSFCellStyle cellStyle2 = wb.createCellStyle();
+        //单元格字体样式2（字体蓝色）
+        HSSFFont cellFontStyle2 = wb.createFont();
+        cellFontStyle2.setColor(HSSFColor.BLUE.index);   //设置字体颜色 (蓝色)
+        cellFontStyle2.setFontHeightInPoints((short) this.fontSize);
+        cellStyle2.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle2.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle2.setFont(cellFontStyle2);
 
-        //设置表头样式，表头居中
-        HSSFCellStyle style = wb.createCellStyle();
-        //设置单元格样式
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        //设置字体
-        HSSFFont font = wb.createFont();
-        font.setFontHeightInPoints((short) this.fontSize);
-        style.setFont(font);
-        //在第1行创建rows
-        HSSFRow row = sheet.createRow(1);
-        //设置列头元素
-        HSSFCell cellHead = null;
-        for (int i = 0; i < heardList.length; i++) {
-            cellHead = row.createCell(i);
-            cellHead.setCellValue(heardList[i]);
-            cellHead.setCellStyle(style);
+
+        //创建HSSFRow对象
+        //在第0行创建titleRow  (表标题行)
+        HSSFRow titleRow = sheet.createRow(0);
+        titleRow.setHeightInPoints(30);//行高
+        HSSFCell cellRow = titleRow.createCell(0);
+        cellRow.setCellValue(this.title);
+        cellRow.setCellStyle(titleStyle);
+        sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
+
+        //在第1行创建headerRow  (表头行)
+        HSSFRow headerRow = sheet.createRow(1);
+        //创建HSSFCell对象
+        for (int i= 0;i< headerList.length;i++){
+            HSSFCell headerCell = headerRow.createCell(i);
+            //设置单元格的值
+            headerCell.setCellStyle(headerStyle);
+            headerCell.setCellValue(headerList[i]);
         }
 
-        //设置每格数据的样式 （字体红色）
-        HSSFCellStyle cellParamStyle = wb.createCellStyle();
-        HSSFFont ParamFontStyle = wb.createFont();
-        cellParamStyle.setAlignment(HorizontalAlignment.CENTER);
-        cellParamStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        ParamFontStyle.setColor(HSSFColor.DARK_RED.index);   //设置字体颜色 (红色)
-        ParamFontStyle.setFontHeightInPoints((short) this.fontSize);
-        cellParamStyle.setFont(ParamFontStyle);
-        //设置每格数据的样式2（字体蓝色）
-        HSSFCellStyle cellParamStyle2 = wb.createCellStyle();
-        cellParamStyle2.setAlignment(HorizontalAlignment.CENTER);
-        cellParamStyle2.setVerticalAlignment(VerticalAlignment.CENTER);
-        HSSFFont ParamFontStyle2 = wb.createFont();
-        ParamFontStyle2.setColor(HSSFColor.BLUE.index);   //设置字体颜色 (蓝色)
-        ParamFontStyle2.setFontHeightInPoints((short) this.fontSize);
-        cellParamStyle2.setFont(ParamFontStyle2);
+        //在第2行创建row  (行数据)
         //开始写入实体数据信息
-        int a = 2;
-        for (int i = 0; i < data.size(); i++) {
-            HSSFRow roww = sheet.createRow(a);
-            Map map = data.get(i);
-            HSSFCell cell = null;
-            for (int j = 0; j < heardKey.length; j++) {
-                cell = roww.createCell(j);
-                cell.setCellStyle(style);
-                Object valueObject = map.get(heardKey[j]);
-                String value = null;
-                if (valueObject == null) {
-                    valueObject = "";
+        if (dataList != null) {
+            for (int i= 2;i< dataList.size();i++){
+                HSSFRow row = sheet.createRow(i);
+                Map<String,Object> map = dataList.get(i);
+                for (int j = 0; j < headerKey.length; j++) {
+                    HSSFCell cell = row.createCell(j);
+                    String value;//输出值
+                    Object valueObject = map.get(headerKey[j]);//数据值
+                    value = getDataTypeCastString(valueObject);
+                    //设置单元格的值
+                    cell.setCellStyle(cellStyle);
+                    cell.setCellValue(value);
                 }
-                if (valueObject instanceof String) {
-                    //取出的数据是字符串直接赋值
-                    value = (String) map.get(heardKey[j]);
-                } else if (valueObject instanceof Integer) {
-                    //取出的数据是Integer
-                    value = String.valueOf(((Integer) (valueObject)).floatValue());
-                } else if (valueObject instanceof BigDecimal) {
-                    //取出的数据是BigDecimal
-                    value = String.valueOf(((BigDecimal) (valueObject)).floatValue());
-                } else {
-                    value = valueObject.toString();
-                }
-                //设置单个单元格的字体颜色
-                if(heardKey[j].equals("ddNum") || heardKey[j].equals("sjNum")){
-                    if((Long)map.get("ddNum")!=null){
-                        if((Long)map.get("sjNum")==null){
-                            cell.setCellStyle(cellParamStyle);
-                        } else if((Long) map.get("ddNum") != (Long) map.get("sjNum")){
-                            if ((Long) map.get("ddNum") > (Long) map.get("sjNum")) {
-                                cell.setCellStyle(cellParamStyle);
-                            }
-                            if ((Long) map.get("ddNum") < (Long) map.get("sjNum")) {
-                                cell.setCellStyle(cellParamStyle2);
-                            }
-                        }else {
-                            cell.setCellStyle(style);
-                        }
-                    }
-                }
-                cell.setCellValue(StringUtils.isEmpty(value) ? "" : value);
             }
-            a++;
         }
+
         //导出数据
         try {
             //设置Http响应头告诉浏览器下载这个附件
-            response.setHeader("Content-Disposition", "attachment;Filename=" + System.currentTimeMillis() + ".xls");
-            OutputStream outputStream = response.getOutputStream();
-            wb.write(outputStream);
-            outputStream.close();
+//            response.setHeader("Content-Disposition", "attachment;Filename="+ URLEncoder.encode(this.fileName ,"UTF-8") +".xls");
+//            OutputStream outputStream = response.getOutputStream();
+//            wb.write(outputStream);
+//            outputStream.close();
+
+            //输出Excel文件
+            FileOutputStream output = new FileOutputStream(URLEncoder.encode(this.fileName ,"UTF-8") +".xls");
+            wb.write(output);
+            output.flush();
+            System.out.println("excel导出成功！");
             return wb.getBytes();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -163,21 +154,41 @@ public class ExcelExportUtil {
     }
 
     /**
+     * 各数据类型转为String
+     * @param valueObject
+     * @return
+     */
+    private String getDataTypeCastString(Object valueObject) {
+        String value;
+        if (valueObject == null) {
+            value = "/";
+        }else if (valueObject instanceof BigDecimal){
+            value = ((BigDecimal) valueObject).setScale(2, BigDecimal.ROUND_HALF_DOWN).toString();
+        }else {
+            value = valueObject.toString();
+        }
+        return value;
+    }
+
+    /**
      * 检查数据配置问题
      *
      * @throws IOException 抛出数据异常类
      */
     private void checkConfig() throws IOException {
-        if (heardKey == null || heardList.length == 0) {
-            throw new IOException("列名数组不能为空或者为NULL");
-        }
 
+        if (headerList == null || headerList.length == 0) {
+            throw new IOException("表头名称数组不能为空或者为NULL");
+        }
+        if (headerKey == null || headerKey.length == 0) {
+            throw new IOException("表头Key值数组不能为空或者为NULL");
+        }
         if (fontSize < 0 || rowHeight < 0 || columnWidth < 0) {
             throw new IOException("字体、宽度或者高度不能为负值");
         }
 
-        if (StringUtils.isEmpty(sheetName)) {
-            throw new IOException("工作表表名不能为NULL");
+        if (StringUtils.isEmpty(title)) {
+            throw new IOException("标题名称不能为空");
         }
     }
 
@@ -190,28 +201,28 @@ public class ExcelExportUtil {
         this.title = title;
     }
 
-    public String[] getHeardList() {
-        return heardList;
+    public String[] getHeaderList() {
+        return headerList;
     }
 
-    public void setHeardList(String[] heardList) {
-        this.heardList = heardList;
+    public void setHeaderList(String[] headerList) {
+        this.headerList = headerList;
     }
 
-    public String[] getHeardKey() {
-        return heardKey;
+    public String[] getHeaderKey() {
+        return headerKey;
     }
 
-    public void setHeardKey(String[] heardKey) {
-        this.heardKey = heardKey;
+    public void setHeaderKey(String[] headerKey) {
+        this.headerKey = headerKey;
     }
 
-    public List<Map> getData() {
-        return data;
+    public List<Map<String, Object>> getDataList() {
+        return dataList;
     }
 
-    public void setData(List<Map> data) {
-        this.data = data;
+    public void setDataList(List<Map<String, Object>> dataList) {
+        this.dataList = dataList;
     }
 
     public int getFontSize() {
@@ -244,5 +255,13 @@ public class ExcelExportUtil {
 
     public void setSheetName(String sheetName) {
         this.sheetName = sheetName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

@@ -9,7 +9,12 @@ import java.io.IOException;
 
 public class Test {
 
+    private static final String[] header = {"企业名称","建筑业总产值","建筑业增加值"};
+    private static final String[] header2 = {"","本月","同期","同比","本月","同期","同比"} ;
+
+
     public static void main(String[] args) {
+
         //创建HSSFWorkbook对象
         HSSFWorkbook wb = new HSSFWorkbook();
         //创建HSSFSheet对象
@@ -65,20 +70,35 @@ public class Test {
         HSSFCell cellRow = titleRow.createCell(0);
         cellRow.setCellValue("标题数据");
         cellRow.setCellStyle(titleStyle);
-        sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
+        sheet.addMergedRegion(new CellRangeAddress(0,0,0,(header2.length)-1));//合并单元格 起始行,结束行,起始列,结束列
 
         //在第1行创建row  (行数据)
         HSSFRow headerRow = sheet.createRow(1);
         //创建HSSFCell对象
-        for (int i= 0;i<=3;i++){
+        for (int i = 0; i < header.length; i++) {
             HSSFCell headerCell = headerRow.createCell(i);
             //设置单元格的值
             headerCell.setCellStyle(headerStyle);
-            headerCell.setCellValue("表头("+i+")数据");
+            if (i == 0){
+                sheet.addMergedRegion(new CellRangeAddress(1,2,0,0));//合并单元格
+            }else if (i == 1){
+                sheet.addMergedRegion(new CellRangeAddress(1,1,1,3));//合并单元格
+            }else if (i == 2){
+                sheet.addMergedRegion(new CellRangeAddress(1,1,4,6));//合并单元格
+            }
+            headerCell.setCellValue(header[i]);
+        }
+        HSSFRow headerRow2 = sheet.createRow(2);
+        //创建HSSFCell对象
+        for (int i = 0; i < header2.length; i++) {
+            HSSFCell headerCell = headerRow2.createCell(i);
+            //设置单元格的值
+            headerCell.setCellStyle(headerStyle);
+            headerCell.setCellValue(header2[i]);
         }
 
         //在第1行创建row  (行数据)
-        HSSFRow row = sheet.createRow(2);
+        HSSFRow row = sheet.createRow(3);
         HSSFCell cell = row.createCell(0);
         //设置单元格的值
         cell.setCellStyle(cellStyle);

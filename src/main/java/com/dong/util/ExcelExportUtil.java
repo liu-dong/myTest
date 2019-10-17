@@ -2,18 +2,18 @@ package com.dong.util;
 
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +43,10 @@ public class ExcelExportUtil {
     private int columnWidth = 20;//列宽
 
     /**
-     * 开始导出数据信息
+     * 导出excel
+     * @param response
+     * @return
+     * @throws IOException
      */
     public byte[] exportExport(HttpServletResponse response) throws IOException {
         //检查参数配置信息
@@ -153,6 +156,109 @@ public class ExcelExportUtil {
         }
     }
 
+
+    /**
+     * 根据模板导出excel
+     * @param path excel模板路径
+     * @param dataList 数据列表
+     * @param headerKey 表头对应的key（用作排序）
+     * @param startRow 数据行的起始行 （指定复杂表头数据起始行）
+     * @return
+     */
+    public Map<String, Object> exportExcelOfTemplate(String path, List<Map<String ,Object>> dataList,String[] headerKey, int startRow) {
+        Map<String, Object> result = new HashMap<>();
+        File excelFile = new File(path);
+        if(!excelFile.exists()) {
+            result.put("success",false);
+            result.put("message","模板不存在");
+            System.out.println("--------------模板：" + path + ": " + result.get("message") + "--------------");
+            return result;
+        }else {
+            //读取模板
+            HSSFWorkbook wb = readHSSFModel(excelFile);
+            Sheet sheet = wb.getSheetAt(0);
+            sheet.setDefaultColumnWidth(20);
+
+            //标题样式（加粗，垂直居中）
+            HSSFCellStyle titleStyle = wb.createCellStyle();
+            titleStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+            titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+            //标题字体样式
+            HSSFFont titleFontStyle = wb.createFont();
+            titleFontStyle.setBold(true);   //加粗
+            titleFontStyle.setFontHeightInPoints((short)18);  //设置标题字体大小
+            titleStyle.setFont(titleFontStyle);
+
+            //表头样式（加粗，垂直居中）
+            HSSFCellStyle headerStyle = wb.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+            //表头字体样式
+            HSSFFont headerFontStyle = wb.createFont();
+            headerFontStyle.setBold(true);   //加粗
+            headerFontStyle.setFontHeightInPoints((short)16);  //设置标题字体大小
+            headerStyle.setFont(headerFontStyle);
+
+
+            //单元格字体样式
+            HSSFFont cellFontStyle = wb.createFont();
+            cellFontStyle.setFontHeightInPoints((short) 14);
+
+            //单元格样式
+            HSSFCellStyle cellStyle = wb.createCellStyle();
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+            cellStyle.setFont(cellFontStyle);
+
+            //单元格样式(居左)
+            HSSFCellStyle leftCellStyle = wb.createCellStyle();
+            leftCellStyle.setAlignment(HorizontalAlignment.LEFT);//水平居中
+            leftCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+            leftCellStyle.setFont(cellFontStyle);
+
+            //单元格样式(居右)
+            HSSFCellStyle rightCellStyle = wb.createCellStyle();
+            rightCellStyle.setAlignment(HorizontalAlignment.LEFT);//水平居中
+            rightCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+            rightCellStyle.setFont(cellFontStyle);
+
+            int size = dataList.size();
+            for (int i = 0; i < size; i++) {
+                Map<String, Object> map = dataList.get(i);
+                Row row = sheet.createRow(startRow);
+                Cell cell1 = row.createCell(0);
+                cell1.setCellValue(i+1);
+                cell1.setCellStyle(cellStyle);
+                for (int j = 0; j < headerKey.length; j++) {
+                    Cell cell = row.createCell(j+1);
+                    for (String key : map.keySet()){
+                        if (headerKey[j].equals(key)) {
+                            cell.setCellValue(String.valueOf(map.get(key)));
+                            if ("unitName".equals(headerKey[j])){
+                                cell.setCellStyle(leftCellStyle);
+                            }else {
+                                cell.setCellStyle(cellStyle);
+                            }
+                            break;
+                        }
+                    }
+                }
+                startRow++;
+            }
+            //输出Excel文件
+            try {
+                FileOutputStream output = new FileOutputStream("G:\\workbook1.xls");
+                wb.write(output);
+                output.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            result.put("success", true);
+            result.put("message", "excel导出成功");
+        }
+        return result;
+    }
+
     /**
      * 各数据类型转为String
      * @param valueObject
@@ -190,6 +296,23 @@ public class ExcelExportUtil {
         if (StringUtils.isEmpty(title)) {
             throw new IOException("标题名称不能为空");
         }
+    }
+
+    /**
+     * 读取excel模板文件（poi）
+     * @param file
+     * @return
+     */
+    private HSSFWorkbook readHSSFModel(File file) {
+        FileInputStream fileInputStream;
+        HSSFWorkbook wb = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            wb = new HSSFWorkbook(fileInputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return wb;
     }
 
 

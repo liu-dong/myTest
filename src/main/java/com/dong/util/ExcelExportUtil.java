@@ -25,22 +25,22 @@ import java.util.Map;
 public class ExcelExportUtil {
 
     private String fileName = String.valueOf(System.currentTimeMillis());//默认文件名
-
-    private String sheetName = "sheet"; //工作表名
-
+    private String sheetName = "Sheet1"; //工作表名
     private String title;//表标题
-
     private String[] headerList;//各个列的表头名称
-
     private String[] headerKey;//各个列的元素key值
-
     private List<Map<String, Object>> dataList;//需要填充的数据列表
-
     private int fontSize = 14;//字体大小——内容字体大小 < 表头字体大小 < 标题字体大小（递增2）
-
     private int rowHeight = 30;//行高
-
     private int columnWidth = 20;//列宽
+
+    private HSSFWorkbook wb;//创建HSSFWorkbook对象
+    private HSSFCellStyle titleStyle;//标题样式（加粗，垂直居中）
+    private HSSFFont titleFontStyle;//标题字体样式
+    private HSSFCellStyle headerStyle;//表头样式（加粗，垂直居中）
+    private HSSFFont headerFontStyle;//表头字体样式
+    private HSSFCellStyle cellStyle;//单元格样式 (默认垂直居中、水平居中)
+    private HSSFFont cellFontStyle;//单元格字体样式
 
     /**
      * 导出excel
@@ -52,53 +52,11 @@ public class ExcelExportUtil {
         //检查参数配置信息
         checkConfig();
         //创建HSSFWorkbook对象
-        HSSFWorkbook wb = new HSSFWorkbook();
+        wb = new HSSFWorkbook();
         //创建HSSFSheet对象
-        HSSFSheet sheet = wb.createSheet("sheet");
+        HSSFSheet sheet = wb.createSheet(this.sheetName);
         sheet.setDefaultColumnWidth(this.columnWidth);//默认列宽
-
-        //标题样式（加粗，垂直居中）
-        HSSFCellStyle titleStyle = wb.createCellStyle();
-        titleStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
-        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-        //标题字体样式
-        HSSFFont titleFontStyle = wb.createFont();
-        titleFontStyle.setBold(true);   //加粗
-        titleFontStyle.setFontHeightInPoints((short) (this.fontSize+4));  //设置标题字体大小
-        titleStyle.setFont(titleFontStyle);
-
-        //表头样式（加粗，垂直居中）
-        HSSFCellStyle headerStyle = wb.createCellStyle();
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
-        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-        //表头字体样式
-        HSSFFont headerFontStyle = wb.createFont();
-        headerFontStyle.setBold(true);   //加粗
-        headerFontStyle.setFontHeightInPoints((short) (this.fontSize+2));  //设置表头字体大小
-        headerStyle.setFont(headerFontStyle);
-
-
-        //单元格样式
-        HSSFCellStyle cellStyle = wb.createCellStyle();
-        //单元格字体样式（字体红色）
-        HSSFFont cellFontStyle = wb.createFont();
-        cellFontStyle.setColor(HSSFColor.DARK_RED.index);   //设置字体颜色 (红色)
-        cellFontStyle.setFontHeightInPoints((short) this.fontSize);
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        cellStyle.setFont(cellFontStyle);
-
-        //单元格样式2
-        HSSFCellStyle cellStyle2 = wb.createCellStyle();
-        //单元格字体样式2（字体蓝色）
-        HSSFFont cellFontStyle2 = wb.createFont();
-        cellFontStyle2.setColor(HSSFColor.BLUE.index);   //设置字体颜色 (蓝色)
-        cellFontStyle2.setFontHeightInPoints((short) this.fontSize);
-        cellStyle2.setVerticalAlignment(VerticalAlignment.CENTER);
-        cellStyle2.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle2.setFont(cellFontStyle2);
-
-
+        initStyle();
         //创建HSSFRow对象
         //在第0行创建titleRow  (表标题行)
         HSSFRow titleRow = sheet.createRow(0);
@@ -135,6 +93,7 @@ public class ExcelExportUtil {
                 }
             }
         }
+        this.autoAdjustColumnSize(sheet,headerKey);
 
         //导出数据
         try {
@@ -167,7 +126,7 @@ public class ExcelExportUtil {
      */
     public Map<String, Object> exportExcelOfTemplate(String path, List<Map<String ,Object>> dataList,String[] headerKey, int startRow) {
         Map<String, Object> result = new HashMap<>();
-        File excelFile = new File(path);
+        File excelFile = new File(path);//模板文件
         if(!excelFile.exists()) {
             result.put("success",false);
             result.put("message","模板不存在");
@@ -175,53 +134,8 @@ public class ExcelExportUtil {
             return result;
         }else {
             //读取模板
-            HSSFWorkbook wb = readHSSFModel(excelFile);
+            wb = readHSSFModel(excelFile);
             Sheet sheet = wb.getSheetAt(0);
-            sheet.setDefaultColumnWidth(20);
-
-            //标题样式（加粗，垂直居中）
-            HSSFCellStyle titleStyle = wb.createCellStyle();
-            titleStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
-            titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-            //标题字体样式
-            HSSFFont titleFontStyle = wb.createFont();
-            titleFontStyle.setBold(true);   //加粗
-            titleFontStyle.setFontHeightInPoints((short)18);  //设置标题字体大小
-            titleStyle.setFont(titleFontStyle);
-
-            //表头样式（加粗，垂直居中）
-            HSSFCellStyle headerStyle = wb.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-            //表头字体样式
-            HSSFFont headerFontStyle = wb.createFont();
-            headerFontStyle.setBold(true);   //加粗
-            headerFontStyle.setFontHeightInPoints((short)16);  //设置标题字体大小
-            headerStyle.setFont(headerFontStyle);
-
-
-            //单元格字体样式
-            HSSFFont cellFontStyle = wb.createFont();
-            cellFontStyle.setFontHeightInPoints((short) 14);
-
-            //单元格样式
-            HSSFCellStyle cellStyle = wb.createCellStyle();
-            cellStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
-            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-            cellStyle.setFont(cellFontStyle);
-
-            //单元格样式(居左)
-            HSSFCellStyle leftCellStyle = wb.createCellStyle();
-            leftCellStyle.setAlignment(HorizontalAlignment.LEFT);//水平居中
-            leftCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-            leftCellStyle.setFont(cellFontStyle);
-
-            //单元格样式(居右)
-            HSSFCellStyle rightCellStyle = wb.createCellStyle();
-            rightCellStyle.setAlignment(HorizontalAlignment.LEFT);//水平居中
-            rightCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-            rightCellStyle.setFont(cellFontStyle);
-
             int size = dataList.size();
             for (int i = 0; i < size; i++) {
                 Map<String, Object> map = dataList.get(i);
@@ -233,13 +147,11 @@ public class ExcelExportUtil {
                     Cell cell = row.createCell(j+1);
                     for (String key : map.keySet()){
                         if (headerKey[j].equals(key)) {
-                            cell.setCellValue(String.valueOf(map.get(key)));
-                            if ("unitName".equals(headerKey[j])){
-                                cell.setCellStyle(leftCellStyle);
-                            }else {
-                                cell.setCellStyle(cellStyle);
-                            }
-                            break;
+                            String value;//输出值
+                            Object valueObject = map.get(headerKey[j]);//数据值
+                            value = getDataTypeCastString(valueObject);
+                            cell.setCellValue(value);
+                            cell.setCellStyle(cellStyle);
                         }
                     }
                 }
@@ -315,6 +227,92 @@ public class ExcelExportUtil {
         return wb;
     }
 
+
+    /**
+     * 初始化样式 ：标题样式、表头样式、单元格样式、字体样式
+     */
+    private void initStyle(){
+
+        //标题样式
+        titleFontStyle = this.getFontStyle(true, (short) this.getFontSize()+4,"");
+        titleStyle = this.getCellStyle("","",titleFontStyle);
+
+        //表头样式
+        headerFontStyle = this.getFontStyle(true, (short) this.getFontSize()+2,"");
+        headerStyle = this.getCellStyle("","",headerFontStyle);
+
+        //单元格样式
+        cellFontStyle = this.getFontStyle(true, (short) this.getFontSize(),"");
+        cellStyle = this.getCellStyle("","",headerFontStyle);
+    }
+
+
+    /**
+     * 字体样式
+     * @param isBold 是否加粗
+     * @param fontSize 字体大小
+     * @param color 颜色 （暂支持红色、蓝色）
+     * @return
+     */
+    private HSSFFont getFontStyle(boolean isBold,int fontSize,String color){
+        HSSFFont fontStyle = wb.createFont();
+        fontStyle.setBold(isBold);//加粗
+        fontStyle.setFontHeightInPoints((short) fontSize);//设置标题字体大小
+        if (!StringUtils.isEmpty(color)) {
+            if ("red".equalsIgnoreCase(color)) {
+                fontStyle.setColor(HSSFColor.RED.index);
+            } else if ("blue".equalsIgnoreCase(color)) {
+                fontStyle.setColor(HSSFColor.BLUE.index);
+            }
+        }
+        return fontStyle;
+    }
+
+    /**
+     * 单元格样式
+     * @param horizontally 默认水平居中 left、right
+     * @param vertical 默认垂直居中 top、bottom
+     * @param font 字体样式
+     * @return
+     */
+    private HSSFCellStyle getCellStyle(String horizontally,String vertical,HSSFFont font){
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        if (StringUtils.isEmpty(horizontally)) {
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+        }else {
+            if ("center".equalsIgnoreCase(horizontally)) {
+                cellStyle.setAlignment(HorizontalAlignment.CENTER);//水平居中
+            } else if ("left".equalsIgnoreCase(horizontally)) {
+                cellStyle.setAlignment(HorizontalAlignment.LEFT);//水平居中
+            }else if ("right".equalsIgnoreCase(horizontally)) {
+                cellStyle.setAlignment(HorizontalAlignment.RIGHT);//水平居中
+            }
+        }
+        if (StringUtils.isEmpty(vertical)) {
+            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+        }else {
+            if ("center".equalsIgnoreCase(vertical)) {
+                cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+            } else if ("top".equalsIgnoreCase(vertical)) {
+                cellStyle.setVerticalAlignment(VerticalAlignment.TOP);//垂直居中
+            }else if ("bottom".equalsIgnoreCase(vertical)) {
+                cellStyle.setVerticalAlignment(VerticalAlignment.BOTTOM);//垂直居中
+            }
+        }
+        cellStyle.setFont(font);
+        return cellStyle;
+    }
+
+    /**
+     * 自动调整列宽
+     * @param sheet
+     * @param headerKey
+     */
+    private void autoAdjustColumnSize(HSSFSheet sheet, String[] headerKey) {
+        for (int i = 0; i < headerKey.length + 1; i++) {
+            sheet.autoSizeColumn(i, true);
+        }
+    }
 
     public String getTitle() {
         return title;

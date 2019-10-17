@@ -36,11 +36,8 @@ public class ExcelExportUtil {
 
     private HSSFWorkbook wb;//创建HSSFWorkbook对象
     private HSSFCellStyle titleStyle;//标题样式（加粗，垂直居中）
-    private HSSFFont titleFontStyle;//标题字体样式
     private HSSFCellStyle headerStyle;//表头样式（加粗，垂直居中）
-    private HSSFFont headerFontStyle;//表头字体样式
     private HSSFCellStyle cellStyle;//单元格样式 (默认垂直居中、水平居中)
-    private HSSFFont cellFontStyle;//单元格字体样式
 
     /**
      * 导出excel
@@ -234,16 +231,19 @@ public class ExcelExportUtil {
     private void initStyle(){
 
         //标题样式
-        titleFontStyle = this.getFontStyle(true, (short) this.getFontSize()+4,"");
-        titleStyle = this.getCellStyle("","",titleFontStyle);
+        //标题字体样式
+        HSSFFont titleFontStyle = this.getFontStyle(true, (short) this.getFontSize() + 4, "");
+        titleStyle = this.getCellStyle("","", titleFontStyle);
 
         //表头样式
-        headerFontStyle = this.getFontStyle(true, (short) this.getFontSize()+2,"");
-        headerStyle = this.getCellStyle("","",headerFontStyle);
+        //表头字体样式
+        HSSFFont headerFontStyle = this.getFontStyle(true, (short) this.getFontSize() + 2, "");
+        headerStyle = this.getCellStyle("","", headerFontStyle);
 
         //单元格样式
-        cellFontStyle = this.getFontStyle(true, (short) this.getFontSize(),"");
-        cellStyle = this.getCellStyle("","",headerFontStyle);
+        //单元格字体样式
+        HSSFFont cellFontStyle = this.getFontStyle(true, (short) this.getFontSize(), "");
+        cellStyle = this.getCellStyle("","", cellFontStyle);
     }
 
 

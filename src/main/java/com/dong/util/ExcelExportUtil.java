@@ -6,11 +6,9 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -32,7 +30,7 @@ public class ExcelExportUtil {
     private List<Map<String, Object>> dataList;//需要填充的数据列表
     private int fontSize = 14;//字体大小——内容字体大小 < 表头字体大小 < 标题字体大小（递增2）
     private int rowHeight = 30;//行高
-    private int columnWidth = 20;//列宽
+    private int columnWidth = 30;//列宽
 
     private HSSFWorkbook wb;//创建HSSFWorkbook对象
     private HSSFCellStyle titleStyle;//标题样式（加粗，垂直居中）
@@ -45,7 +43,7 @@ public class ExcelExportUtil {
      * @return
      * @throws IOException
      */
-    public byte[] exportExport(HttpServletResponse response) throws IOException {
+    public void exportExport(HttpServletResponse response, HttpServletRequest request) throws IOException {
         //检查参数配置信息
         checkConfig();
         //创建HSSFWorkbook对象
@@ -61,7 +59,7 @@ public class ExcelExportUtil {
         HSSFCell cellRow = titleRow.createCell(0);
         cellRow.setCellValue(this.title);
         cellRow.setCellStyle(titleStyle);
-        sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
+        sheet.addMergedRegion(new CellRangeAddress(0,0,0,this.headerKey.length));
 
         //在第1行创建headerRow  (表头行)
         HSSFRow headerRow = sheet.createRow(1);
@@ -76,36 +74,41 @@ public class ExcelExportUtil {
         //在第2行创建row  (行数据)
         //开始写入实体数据信息
         if (dataList != null) {
-            for (int i= 2;i< dataList.size();i++){
-                HSSFRow row = sheet.createRow(i);
+            for (int i= 0;i< dataList.size();i++){
+                HSSFRow row = sheet.createRow(i+2);
+                HSSFCell cell = row.createCell(0);
+                cell.setCellValue(i+1);
+                cell.setCellStyle(cellStyle);
                 Map<String,Object> map = dataList.get(i);
                 for (int j = 0; j < headerKey.length; j++) {
-                    HSSFCell cell = row.createCell(j);
-                    String value;//输出值
-                    Object valueObject = map.get(headerKey[j]);//数据值
-                    value = getDataTypeCastString(valueObject);
-                    //设置单元格的值
-                    cell.setCellStyle(cellStyle);
-                    cell.setCellValue(value);
+                    cell = row.createCell(j+1);
+                    for (String key : map.keySet()){
+                        if (headerKey[j].equals(key)) {
+                            String value;//输出值
+                            Object valueObject = map.get(headerKey[j]);//数据值
+                            value = getDataTypeCastString(valueObject);
+                            cell.setCellValue(value);
+                            cell.setCellStyle(cellStyle);
+                        }
+                    }
                 }
             }
         }
-        this.autoAdjustColumnSize(sheet,headerKey);
+//        this.autoAdjustColumnSize(sheet,headerKey);
 
         //保存文件
         try {
             //设置Http响应头告诉浏览器下载这个Excel文件
-//            response.setHeader("Content-Disposition", "attachment;Filename="+ URLEncoder.encode(this.fileName ,"UTF-8") +".xls");
-//            OutputStream output = response.getOutputStream();
+            setFileNameEncoding(request, response, this.fileName);//解决下载名称乱码
+            OutputStream output = response.getOutputStream();
 
             //输出Excel文件在本地
-            FileOutputStream output = new FileOutputStream("G:\\"+URLEncoder.encode(this.fileName ,"UTF-8")+".xls");
+//            FileOutputStream output = new FileOutputStream("G:\\"+URLEncoder.encode(this.fileName ,"UTF-8")+".xls");
 
             wb.write(output);
             output.flush();
             output.close();
             System.out.println("excel导出成功！");
-            return wb.getBytes();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new IOException("导出Excel出现严重异常，异常信息：" + ex.getMessage());
@@ -182,7 +185,7 @@ public class ExcelExportUtil {
      */
     private String getDataTypeCastString(Object valueObject) {
         String value;
-        if (valueObject == null) {
+        if (valueObject == null || "".equals(valueObject)) {
             value = "/";
         }else if (valueObject instanceof BigDecimal){
             value = ((BigDecimal) valueObject).setScale(2, BigDecimal.ROUND_HALF_DOWN).toString();
@@ -318,6 +321,36 @@ public class ExcelExportUtil {
     private void autoAdjustColumnSize(HSSFSheet sheet, String[] headerKey) {
         for (int i = 0; i < headerKey.length + 1; i++) {
             sheet.autoSizeColumn(i, true);
+        }
+    }
+
+    /**
+     * 解决下载名称乱码 （浏览器不兼容）
+     * @param request
+     * @param response
+     * @param fileName
+     * @throws UnsupportedEncodingException
+     */
+    private void setFileNameEncoding(javax.servlet.http.HttpServletRequest request, HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
+        String browser = request.getHeader("User-Agent");
+        if (-1 < browser.indexOf("MSIE 6.0") || -1 < browser.indexOf("MSIE 7.0")) {// IE6, IE7 浏览器
+            response.addHeader("content-disposition", "attachment;filename="
+                    + new String(fileName.getBytes(), "ISO8859-1"));
+        } else if (-1 < browser.indexOf("MSIE 8.0")) {// IE8
+            response.addHeader("content-disposition", "attachment;filename="
+                    + URLEncoder.encode(fileName, "UTF-8"));
+        } else if (-1 < browser.indexOf("MSIE 9.0")) {// IE9
+            response.addHeader("content-disposition", "attachment;filename="
+                    + URLEncoder.encode(fileName, "UTF-8"));
+        } else if (-1 < browser.indexOf("Chrome")) {// 谷歌
+            response.addHeader("content-disposition",
+                    "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
+        } else if (-1 < browser.indexOf("Safari")) {// 苹果
+            response.addHeader("content-disposition", "attachment;filename="
+                    + new String(fileName.getBytes(), "ISO8859-1"));
+        } else {// 火狐或者其他的浏览器
+            response.addHeader("content-disposition",
+                    "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
         }
     }
 

@@ -92,18 +92,18 @@ public class ExcelExportUtil {
         }
         this.autoAdjustColumnSize(sheet,headerKey);
 
-        //导出数据
+        //保存文件
         try {
-            //设置Http响应头告诉浏览器下载这个附件
+            //设置Http响应头告诉浏览器下载这个Excel文件
 //            response.setHeader("Content-Disposition", "attachment;Filename="+ URLEncoder.encode(this.fileName ,"UTF-8") +".xls");
-//            OutputStream outputStream = response.getOutputStream();
-//            wb.write(outputStream);
-//            outputStream.close();
+//            OutputStream output = response.getOutputStream();
 
-            //输出Excel文件
-            FileOutputStream output = new FileOutputStream(URLEncoder.encode(this.fileName ,"UTF-8") +".xls");
+            //输出Excel文件在本地
+            FileOutputStream output = new FileOutputStream("G:\\"+URLEncoder.encode(this.fileName ,"UTF-8")+".xls");
+
             wb.write(output);
             output.flush();
+            output.close();
             System.out.println("excel导出成功！");
             return wb.getBytes();
         } catch (Exception ex) {
@@ -121,7 +121,7 @@ public class ExcelExportUtil {
      * @param startRow 数据行的起始行 （指定复杂表头数据起始行）
      * @return
      */
-    public Map<String, Object> exportExcelOfTemplate(String path, List<Map<String ,Object>> dataList,String[] headerKey, int startRow) {
+    public Map<String, Object> exportExcelOfTemplate(HttpServletResponse response, String path, List<Map<String ,Object>> dataList,String[] headerKey, int startRow) {
         Map<String, Object> result = new HashMap<>();
         File excelFile = new File(path);//模板文件
         if(!excelFile.exists()) {
@@ -156,12 +156,19 @@ public class ExcelExportUtil {
             }
             //输出Excel文件
             try {
-                FileOutputStream output = new FileOutputStream("G:\\workbook1.xls");
+                //设置Http响应头告诉浏览器下载这个Excel文件
+//            response.setHeader("Content-Disposition", "attachment;Filename="+ URLEncoder.encode(this.fileName ,"UTF-8") +".xls");
+//            OutputStream output = response.getOutputStream();
+
+                //输出Excel文件在本地
+                FileOutputStream output = new FileOutputStream("G:\\"+URLEncoder.encode(this.fileName ,"UTF-8")+".xls");
                 wb.write(output);
                 output.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            System.out.println("excel导出成功！");
             result.put("success", true);
             result.put("message", "excel导出成功");
         }

@@ -31,6 +31,7 @@ public class ExcelExportUtil {
     private int fontSize = 14;//字体大小——内容字体大小 < 表头字体大小 < 标题字体大小（递增2）
     private int rowHeight = 30;//行高
     private int columnWidth = 30;//列宽
+    private int exportWay = 1;//导出方式，默认直接导出
 
     private HSSFWorkbook wb;//创建HSSFWorkbook对象
     private HSSFCellStyle titleStyle;//标题样式（加粗，垂直居中）
@@ -97,24 +98,8 @@ public class ExcelExportUtil {
 //        this.autoAdjustColumnSize(sheet,headerKey);
 
         //保存文件
-        try {
-            //设置Http响应头告诉浏览器下载这个Excel文件
-            setFileNameEncoding(request, response, this.fileName);//解决下载名称乱码
-            OutputStream output = response.getOutputStream();
-
-            //输出Excel文件在本地
-//            FileOutputStream output = new FileOutputStream("G:\\"+URLEncoder.encode(this.fileName ,"UTF-8")+".xls");
-
-            wb.write(output);
-            output.flush();
-            output.close();
-            System.out.println("excel导出成功！");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new IOException("导出Excel出现严重异常，异常信息：" + ex.getMessage());
-        }
+        exportWay(response, request);
     }
-
 
     /**
      * 根据模板导出excel
@@ -176,6 +161,31 @@ public class ExcelExportUtil {
             result.put("message", "excel导出成功");
         }
         return result;
+    }
+
+    private void exportWay(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        try {
+            OutputStream output;
+            if (exportWay == 1){
+                //设置Http响应头告诉浏览器下载这个Excel文件
+                output = response.getOutputStream();
+                setFileNameEncoding(request, response, this.fileName);//解决下载名称乱码
+            }else {
+                //输出Excel文件在本地
+                output = new FileOutputStream("G:\\" + URLEncoder.encode(this.fileName, "UTF-8") + ".xls");
+            }
+            if (output != null) {
+                wb.write(output);
+                output.flush();
+                output.close();
+                System.out.println("excel导出成功！");
+            }else {
+                System.out.println("excel导出失败！");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IOException("导出Excel出现严重异常，异常信息：" + ex.getMessage());
+        }
     }
 
     /**
@@ -333,24 +343,18 @@ public class ExcelExportUtil {
      */
     private void setFileNameEncoding(javax.servlet.http.HttpServletRequest request, HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
         String browser = request.getHeader("User-Agent");
-        if (-1 < browser.indexOf("MSIE 6.0") || -1 < browser.indexOf("MSIE 7.0")) {// IE6, IE7 浏览器
-            response.addHeader("content-disposition", "attachment;filename="
-                    + new String(fileName.getBytes(), "ISO8859-1"));
-        } else if (-1 < browser.indexOf("MSIE 8.0")) {// IE8
-            response.addHeader("content-disposition", "attachment;filename="
-                    + URLEncoder.encode(fileName, "UTF-8"));
-        } else if (-1 < browser.indexOf("MSIE 9.0")) {// IE9
-            response.addHeader("content-disposition", "attachment;filename="
-                    + URLEncoder.encode(fileName, "UTF-8"));
-        } else if (-1 < browser.indexOf("Chrome")) {// 谷歌
-            response.addHeader("content-disposition",
-                    "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
-        } else if (-1 < browser.indexOf("Safari")) {// 苹果
-            response.addHeader("content-disposition", "attachment;filename="
-                    + new String(fileName.getBytes(), "ISO8859-1"));
+        if (browser.contains("MSIE 6.0") || browser.contains("MSIE 7.0")) {// IE6, IE7 浏览器
+            response.addHeader("content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        } else if (browser.contains("MSIE 8.0")) {// IE8
+            response.addHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        } else if (browser.contains("MSIE 9.0")) {// IE9
+            response.addHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        } else if (browser.contains("Chrome")) {// 谷歌
+            response.addHeader("content-disposition", "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
+        } else if (browser.contains("Safari")) {// 苹果
+            response.addHeader("content-disposition", "attachment;filename="  + new String(fileName.getBytes(), "ISO8859-1"));
         } else {// 火狐或者其他的浏览器
-            response.addHeader("content-disposition",
-                    "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
+            response.addHeader("content-disposition", "attachment;filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
         }
     }
 
@@ -424,5 +428,13 @@ public class ExcelExportUtil {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public int getExportWay() {
+        return exportWay;
+    }
+
+    public void setExportWay(int exportWay) {
+        this.exportWay = exportWay;
     }
 }

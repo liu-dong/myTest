@@ -8,11 +8,11 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 
-/*
-
-查询短信模板的审核状态。
-
-*/
+/**
+ * 查询短信模板的审核状态
+ *
+ * @author 3hld
+ */
 public class QuerySmsTemplate {
     public static void main(String[] args) {
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4FrVJ4E2pxsz6VXLCxzs", "YSrywQ4Kr09pEKUravcY27NtNmvThf");

@@ -22,9 +22,16 @@ import java.util.Map;
  */
 public class ExcelExportUtil {
 
-    private String fileName = String.valueOf(System.currentTimeMillis());//默认文件名
-    private String sheetName = "Sheet1"; //工作表名
-    private String title;//表标题
+    /**
+     * 默认文件名
+     */
+    private String fileName = String.valueOf(System.currentTimeMillis());
+    /**
+     * 工作表名
+     */
+    private String sheetName = "Sheet1";
+    //表标题
+    private String title;
     private String[] headerList;//各个列的表头名称
     private String[] headerKey;//各个列的元素key值
     private List<Map<String, Object>> dataList;//需要填充的数据列表
@@ -51,12 +58,14 @@ public class ExcelExportUtil {
         wb = new HSSFWorkbook();
         //创建HSSFSheet对象
         HSSFSheet sheet = wb.createSheet(this.sheetName);
-        sheet.setDefaultColumnWidth(this.columnWidth);//默认列宽
+        //默认列宽
+        sheet.setDefaultColumnWidth(this.columnWidth);
         initStyle();
         //创建HSSFRow对象
         //在第0行创建titleRow  (表标题行)
         HSSFRow titleRow = sheet.createRow(0);
-        titleRow.setHeightInPoints(30);//行高
+        //行高
+        titleRow.setHeightInPoints(30);
         HSSFCell cellRow = titleRow.createCell(0);
         cellRow.setCellValue(this.title);
         cellRow.setCellStyle(titleStyle);
@@ -86,7 +95,8 @@ public class ExcelExportUtil {
                     for (String key : map.keySet()){
                         if (headerKey[j].equals(key)) {
                             String value;//输出值
-                            Object valueObject = map.get(headerKey[j]);//数据值
+                            //数据值
+                            Object valueObject = map.get(headerKey[j]);
                             value = getDataTypeCastString(valueObject);
                             cell.setCellValue(value);
                             cell.setCellStyle(cellStyle);
@@ -169,7 +179,8 @@ public class ExcelExportUtil {
             if (exportWay == 1){
                 //设置Http响应头告诉浏览器下载这个Excel文件
                 output = response.getOutputStream();
-                setFileNameEncoding(request, response, this.fileName);//解决下载名称乱码
+                //解决下载名称乱码
+                setFileNameEncoding(request, response, this.fileName);
             }else {
                 //输出Excel文件在本地
                 output = new FileOutputStream("G:\\" + URLEncoder.encode(this.fileName, "UTF-8") + ".xls");
@@ -276,8 +287,10 @@ public class ExcelExportUtil {
      */
     private HSSFFont getFontStyle(boolean isBold,int fontSize,String color){
         HSSFFont fontStyle = wb.createFont();
-        fontStyle.setBold(isBold);//加粗
-        fontStyle.setFontHeightInPoints((short) fontSize);//设置标题字体大小
+        //加粗
+        fontStyle.setBold(isBold);
+        //设置标题字体大小
+        fontStyle.setFontHeightInPoints((short) fontSize);
         if (!StringUtils.isEmpty(color)) {
             if ("red".equalsIgnoreCase(color)) {
                 fontStyle.setColor(HSSFColor.RED.index);

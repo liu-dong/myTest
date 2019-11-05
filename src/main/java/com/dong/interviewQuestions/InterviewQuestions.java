@@ -23,7 +23,8 @@ public class InterviewQuestions {
                 list转数组：
                     1：list.toArray()
          */
-        interviewQuestions.arrayListCast();
+//        interviewQuestions.arrayListCast();
+
         /*
             Q2:依赖注入有哪几种注解
                 @Autowired(Spring)、@Resource(Spring) @Inject(JAVA)
@@ -60,13 +61,57 @@ public class InterviewQuestions {
          */
 
         /*
-            redis是什么？有哪些应用场景
+            Q7:redis是什么？有哪些应用场景
                 一种非关系型数据库，支持持久化，可以将内存中的数据保存到磁盘中，具有丰富的数据结构存储，
                 性能高，适用海量数据的存储，可以横向扩展
              应用场景：
                 1、数据高并发的读写
                 2、海量数据的读写
                 3、对扩展性要求高的数据
+         */
+
+        /*
+            Q8:什么是缓存穿透？怎么解决？
+
+                缓存中没有，数据库也没有的数据，用户一直请求，造成数据库的压力过大
+                解决办法：
+                    1、在接口中做出校验，过滤这种请求
+                    2、设定一个null的返回值
+
+         */
+
+        /*
+            Q9:事务的四大特性，你使用过哪一个，简单描述下使用场景。
+                事务的四大特性：原子性、一致性、隔离性、持久性
+                原子性：保存关联表数据时，要么同时成功要么同时失败。
+                一致性：在处理精确数据计算时，比如金额，需要保持数据前后一致性。
+         */
+
+        /*
+            Q10：String str = new String("abc")究竟创建了几个对象？jvm中有什么变化？
+                创建了两个对象
+                在jvm中，首先会在堆内存中开辟一片内存空间，变量名str指向这片空间，
+                    然后在方法区中的常量池里面寻找有没有"abc"常量，如果没有则创建一个，
+                    有，则直接把常量池中的和堆内存中联系起来
+         */
+        interviewQuestions.stringTest();
+
+        /*
+            Q11:集群跟分布式的区别，并说CAP原则
+                集群，相同业务系统部署在多个服务器上，即用多个服务器来分担系统压力。
+                分布式，一个业务系统拆分成多个业务子系统部署在多个服务器上，即用拆分子系统的方法来分担系统压力。
+
+                CAP原则：一致性，可用性，分区容错性
+         */
+
+        /*
+            Q12:什么是死锁？怎样防止死锁？
+                两个或多个进程循环等待，并无限等待被占有的资源。
+                产生死锁的四个必要条件：互斥条件、不可抢占条件、占有并申请条件、循环等待条件
+
+                预防死锁：预防同时产生四个必要条件
+
+
          */
     }
 
@@ -82,6 +127,15 @@ public class InterviewQuestions {
         System.out.println("数组转列表1：" + list);
         System.out.println("数组转列表2：" + Arrays.asList(arr));
         System.out.println("列表转数组：" + Arrays.toString(list.toArray()));//.getClass().isArray()判断是否是数组
+    }
+
+    public void stringTest(){
+        String str1 = new String("liudong");
+        String str2 = new String("liudong");
+
+//        System.out.println(str1);
+        System.out.println(str1);
+        System.out.println(str2.equals(str1));
     }
 
 }

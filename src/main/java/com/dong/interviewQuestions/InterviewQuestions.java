@@ -116,6 +116,8 @@ public class InterviewQuestions {
 
         /*
             Q13:synchronized的底层实现原理
+                进入和退出监视器锁（monitor）,调用monitorenter方法占用monitor，处于锁定状态
+                调用monitorexit退出monitor，让出monitor的所有权
 
          */
 

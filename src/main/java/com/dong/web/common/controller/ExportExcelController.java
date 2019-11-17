@@ -1,12 +1,10 @@
 package com.dong.web.common.controller;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.poi.hssf.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +19,7 @@ import java.util.List;
  */
 public class ExportExcelController {
 
-    private static final Logger log = LoggerFactory.getLogger(ExportExcelController.class);
+//    private static final Logger log = LoggerFactory.getLogger(ExportExcelController.class);
 
     /**
      * 导出功能

@@ -2,9 +2,10 @@ package com.dong.jmsSpring.consumer;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-public class ConsumerMessageListener implements javax.jms.MessageListener {
+public class ConsumerMessageListener implements MessageListener {
 
     public void onMessage(Message message) {
         TextMessage textMessage = (TextMessage) message;

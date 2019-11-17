@@ -113,6 +113,29 @@ public class InterviewQuestions {
 
 
          */
+
+        /*
+            Q13:synchronized的底层实现原理
+                进入和退出监视器锁（monitor）,调用monitorenter方法占用monitor，处于锁定状态
+                调用monitorexit退出monitor，让出monitor的所有权
+
+         */
+
+        /*
+            Q14:jvm有哪些垃圾回收算法
+                引用计数算法、标记清除算法、复制算法、标记整理算法、分代收集算法
+
+         */
+
+        /*
+            Q15:redis怎么实现分布式锁
+        */
+
+        /*
+            Q16:怎么保证缓存和数据库的一致性
+                读的时候先读缓存，如果没有再读数据库，并且更新缓存、再返回响应
+                写的时候先删除缓存，再修改数据库
+         */
     }
 
     /**

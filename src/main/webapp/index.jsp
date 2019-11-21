@@ -14,5 +14,11 @@
 <body>
 <h1>hello world!</h1>
 <a href="${pageContext.request.contextPath}/page/goFileUpload">附件上传</a>
+
+<form action="/login" method="get">
+    用户名：<input type="text" name="username">
+    密  码：<input type="password" name="password">
+    <input type="submit" name="submit" value="提交">
+</form>
 </body>
 </html>

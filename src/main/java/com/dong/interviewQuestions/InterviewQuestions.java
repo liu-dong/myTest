@@ -1,9 +1,9 @@
 package com.dong.interviewQuestions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 /**
  *
@@ -14,7 +14,33 @@ public class InterviewQuestions {
 
     public static void main(String[] args) {
 
-        InterviewQuestions interviewQuestions = new InterviewQuestions();
+
+        final int num = 2;
+//        static String str = "liudong";
+        HashMap hashMap = new HashMap();
+        TreeMap treeMap = new TreeMap();
+        Hashtable hashtable = new Hashtable();
+        LinkedHashMap linkedHashMap = new LinkedHashMap();
+//        num = 4;
+
+        hashMap.put("","" );
+        hashtable.put("","");
+        System.out.println(num);
+
+        /*SString s = "liudong";
+        String s1 = "liudong";
+        String s2 = new String("liudong");
+        String s3 = new String("liudong");
+
+        ystem.out.println(s==s1);
+        System.out.println(s.equals(s1));
+        System.out.println(s==s2);
+        System.out.println(s.equals(s2));
+        System.out.println(s2==s3);
+        System.out.println(s2.equals(s3));*/
+
+
+//        InterviewQuestions interviewQuestions = new InterviewQuestions();
         /*
             Q1:数组和list互相转换的方法
                 数组转list:
@@ -94,7 +120,7 @@ public class InterviewQuestions {
                     然后在方法区中的常量池里面寻找有没有"abc"常量，如果没有则创建一个，
                     有，则直接把常量池中的和堆内存中联系起来
          */
-        interviewQuestions.stringTest();
+//        interviewQuestions.stringTest();
 
         /*
             Q11:集群跟分布式的区别，并说CAP原则
@@ -142,14 +168,15 @@ public class InterviewQuestions {
         数组list互转
      */
     public void arrayListCast(){
-        String[] arr = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+        /*String[] arr = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
         List<String> list = new ArrayList<>();
         Collections.addAll(list, arr);
 
         System.out.println("数据组：" + Arrays.toString(arr));
         System.out.println("数组转列表1：" + list);
         System.out.println("数组转列表2：" + Arrays.asList(arr));
-        System.out.println("列表转数组：" + Arrays.toString(list.toArray()));//.getClass().isArray()判断是否是数组
+        System.out.println("列表转数组：" + Arrays.toString(list.toArray()));//.getClass().isArray()判断是否是数组*/
+
     }
 
     public void stringTest(){

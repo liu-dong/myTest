@@ -1,0 +1,318 @@
+JAVA面试题
+一、Java基础
+    1、Java基础
+       Q1：JDK与JRE有什么区别？
+
+            JDK是开发环境，JRE是运行环境。
+            具体来说JDK包含了JRE，还有javac编译器和其他调试和分析工具等，而JRE只是一个java程序的运行环境。
+
+       Q2：==和equals()的区别？
+
+            ==：对基本类型来说比较的是值是否相同，对引用类型来说比较的是引用是否相同。
+            equals()：默认情况下是对引用的比较，只是很多类重新了equals()方法，所以大多时候是用来比较值是否相同。
+
+       Q3：两个对象的hashcode()相同，则equals也一定为true，对吗？
+
+            不对，因为无论哈希函数设计的多么精细都会存在两个关键字映射在同一个地址上，
+            即有可能存在两个键值对不相等，哈希值相等的情况。
+
+       Q4：final在Java中有什么作用？
+
+            final修饰的类为最终类，不能被继承。
+            final修饰的方法不能被重写。
+            final修改的变量为常量，必须被初始化，而且被初始化后不能被改变。
+
+       Q5：java中的Math.round(-1.5)等于多少？
+
+            -1,Math.round()计算机函数，四舍五入。
+
+       Q6：String属于基础数据类型吗？
+
+            不属于，基础数据类型只有八种：int long short double float byte boolean char
+
+       Q7：java中的操作字符串都有哪些类？它们之间有什么区别?
+
+            String、StringBuffer、StringBuilder
+            String：声明的是不可变的对象，每次操作都会生成新的对象。
+            StringBuffer：声明的是可变的对象，可以对原有的对象更改，并且是线程安全的，但性能略低。
+            StringBuilder：声明的是可变的对象，可以对原有的对象更改，但是非线程安全，但性能高。
+            所以，如果对象不可变选String；对象可变，单线程的选StringBuilder,要线程安全选择StringBuffer。
+
+       Q8：String str = "i"和String str = new String(i)一样吗？
+
+            不一样，内存的分配方式不一样，java虚拟机会吧String str = "i"的内存分配到常量池中，
+            而String str = new String(i)则被分配在堆内存中。
+
+       Q9：如何将字符串反转？
+
+            使用StringBuffer或StringBuilder中的reverse()方法。
+
+       Q10：String类中的常用方法有哪些？
+
+            indexOf()：返回指定字符串的索引；
+            chatAt()：返回指定索引处的字符；
+            replace():字符串替换；
+            trim():去除空字符；
+            split():根据指定字符分割字符串为数组；
+            getByte():返回字符串的byte型数组；
+            length():获取字符串长度；
+            toLowerCase():将字符串转换为小写；
+            toUpperCase():将字符串转换为大写；
+            subString():截取字符串；
+            equals():比较字符串的值；
+
+       Q11：抽象类必须要有抽象方法吗？
+
+            不需要，抽象类不一定有抽象方法
+
+       Q12：普通类和抽象类有什么区别？
+
+            普通类不能有抽象方法，抽象类可以有。
+            抽象类不能被实例化，普通类可以被实例化。
+
+       Q13：抽象类能被final修饰吗？
+
+            不能，抽象类定义就让其他类继承的，而final类是不能被继承的，彼此冲突。
+
+       Q14：接口和抽象类有什么区别？
+
+            接口必须使用implement来实现，抽象类是由子类用extends来继承的。
+            抽象类可以有构造方法，接口不能有。
+            类可以实现多个接口，但只能继承一个抽象类。
+
+       Q15：java中的IO流分为几种？
+
+            按功能：分为输入流和输出流；
+            按类型：分为字符流和字节流，字符流和字节流的区别是，字符流按16位传输以字符为单位输入输出数据，
+                字节流按8位传输以字节为单位来输入输出数据。
+
+       Q16：BIO、NIO、AIO有什么区别？
+
+            BIO：Block IO同步阻塞是IO,就是常用的传统IO,它的特点是模式简单、使用方便，并发处理能力低。
+            NIO：New IO同步非阻塞IO,是传统IO的升级，客户端和服务端通过channel(通道)通讯，实现多路复用。
+            AIO:asynchronous IO异步非阻塞IO,是NIO的升级，也叫NIO2,异步I0的操作基于事件和回调机制。
+
+       Q17：Files的常用方法有哪些？
+
+            Files.exists()：判断文件路径是否存在
+            Files.createFile()：创建文件
+            Files.createDirectory()：创建目录
+            Files.delete()：删除一个文件或者目录
+            Files.copy()：复制文件
+            Files.move()：移动文件
+            Files.size()：查看文件个数
+            Files.read()：读取文件
+            Files.write()：写入文件
+
+    2、容器
+        Q1：java容器有哪些？
+
+            Collection
+                List
+                    ArrayList
+                    LinkedList
+                    Vector(Stack)
+                Queue
+                    PriorityQueue
+                Set
+                    HashSet(LinkHashSet)
+                    TreeSet
+            Map
+                HashMap
+                TreeMap
+
+        Q2：Collection和Collections有什么区别？
+
+            Collection：是一个集合接口，它提供了一些对集合对象基本操作的通用方法接口，它的意义在于为各种具体的集合最大化的统一操作方式。
+            Collections：是一个工具类，它提供了一系列静态方法对集合操作，包括排序、线程安全等。
+
+        Q3：List、Set、Map之间的区别是什么？
+
+            List和Set都是继承了Collection接口，主要实现了AbstractList和AbstractSet;
+            List里面的元素可重复，按顺序排列，Set里面的元素不可重复，无序；
+            Map主要有HashMap和TreeMap两个实现类，里面的元素都是不可重复的，无序。
+
+        Q4：HashMap和HashTable有什么区别？
+            HashMap去掉了contains方法，但加上了containsKey和containsValue；
+            HashTable是同步的，HashMap是非同步的，所以HashTable是线程安全的；
+            HashMap允许键值为null,HashTable不允许；
+
+        Q5：如何决定使用 HashMap 还是 TreeMap？
+            插入删除多选择使用HashMap,查询遍历多选择使用TreeMap。
+
+        Q6：说一下 HashMap 的实现原理？
+            概述：HashMap是基于哈希表的Map接口的非同步实现，此实现类提供了所有可选的映射操作，并且键值都可以为null值，
+                但是不提供映射的顺序，且不保证每次的顺序都一样。
+            数据结构：HashMap是一种"链表散列"的数据结构，即链表和数组的结合体。
+            原理：往HashMap中put值时，首先根据key的hashCode计算出hash值，然后根据hash值等到对应的数组下标（即数组位置），
+                如果该数组位置上有元素，那么会将该元素以链表的形式存放，新加入的放在链头，最先加入的放在链尾。如果没有元素，则把该值
+                放在当前位置。
+
+
+        Q7：说一下 HashSet 的实现原理？
+            HashSet是基于HashMap实现的，它的底层原理就是HashMap的原理。
+            HashSet的值都存在HashMap的key中，HashMap的value存的都是PERSENT。
+
+        Q8：ArrayList 和 LinkedList 的区别是什么？
+            ArrayList的底层数据结构是数组，支持随机访问。
+            LinkedList的数据结构是链表，不支持随机访问。
+
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+
+    3、多线程
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+    4、反射
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+    5、对象拷贝
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+    6、Java Web模块
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+    7、异常模块
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+    8、网络模块
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+    9、设计模式
+        Q1：
+        Q2：
+        Q3：
+        Q4：
+        Q5：
+        Q6：
+        Q7：
+        Q8：
+        Q9：
+        Q10：
+        Q11：
+        Q12：
+        Q13：
+        Q14：
+        Q15：
+        Q16：
+        Q17：
+
+二、框架
+    1、Spring
+        ·Spring MVC
+        ·Spring Boot
+        ·Spring Cloud
+    2、Hibernate
+    3、MyBatis
+    4、中间件
+        ·RabbitMQ
+        ·Kafka
+        ·Zookeeper
+    5、数据库
+        ·MySQL
+        ·Redis
+三、JVM

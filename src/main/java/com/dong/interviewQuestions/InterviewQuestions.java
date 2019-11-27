@@ -1,9 +1,6 @@
 package com.dong.interviewQuestions;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  *
@@ -21,11 +18,15 @@ public class InterviewQuestions {
         TreeMap treeMap = new TreeMap();
         Hashtable hashtable = new Hashtable();
         LinkedHashMap linkedHashMap = new LinkedHashMap();
+        List list = new ArrayList();
+        list.add(1);
+        list.add(123);
+        list.add("刘东");
+//        Array array = new Array();
+        System.out.println(list.toString());
+        System.out.println(list.iterator().next());
 //        num = 4;
 
-        hashMap.put("","" );
-        hashtable.put("","");
-        System.out.println(num);
 
         /*SString s = "liudong";
         String s1 = "liudong";

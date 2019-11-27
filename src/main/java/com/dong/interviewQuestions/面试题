@@ -153,20 +153,42 @@ JAVA面试题
             HashSet是基于HashMap实现的，它的底层原理就是HashMap的原理。
             HashSet的值都存在HashMap的key中，HashMap的value存的都是PERSENT。
 
-        Q8：ArrayList 和 LinkedList 的区别是什么？
-            ArrayList的底层数据结构是数组，支持随机访问。
-            LinkedList的数据结构是链表，不支持随机访问。
+        Q8：ArrayList 和 LinkedList、Vector 的区别是什么？
+            ArrayList的底层数据结构是数组，支持随机访问,所以适合查询和遍历，不是适合插入删除。
+            LinkedList的数据结构是链表，不支持随机访问，所以不适合查询和遍历，而因为是链表结构，且提供了
+                专门操作表头和表尾的方法，所以很适合数据的动态插入和删除。
+            Vector的底层数据结构和ArrayList一样，都是数组，但是Vector是支持线程同步的，所以随机访问的开销会
+                比ArrayList大，但如果集合数据量过大的话，用Vector有一定的优势。
 
-        Q9：
-        Q10：
-        Q11：
-        Q12：
-        Q13：
-        Q14：
-        Q15：
-        Q16：
-        Q17：
+        Q9：如何实现数组和 List 之间的转换？
+            数组转List：Arrays.asList()
+            List转数组：ArrayList.toArray()
 
+        Q10：Array 和 ArrayList 有何区别？
+            Array可以存储基本类型和对象类型，大小的固定，只能存储同一种数据类型的元素
+            ArrayList只能存储对象类型，大小是动态变化的，可以存储不同的类型的元素，还提供了更多的操作方法和特性。
+
+        Q11：在 Queue 中 poll()和 remove()有什么区别？
+            两者的作用都是从Queue中取出一个元素，但poll()获取元素失败时会返回空，而remove()会抛出异常。
+
+        Q12：哪些集合类是线程安全的？
+            Vector：相比ArrayList多了线程安全。
+            HashTable：相比HashMap多了线程安全。
+            Stack：堆栈类。
+            Enumeration：枚举。
+
+        Q13：迭代器 Iterator 是什么？
+            迭代器是一种设计模式，所以Iterator是一个采用迭代器模式的对象，它的作用是遍历并选择序列中的对象。
+                它提供了一个可以访问容器对象内的元素，又不会暴露容器对象内部细节的方法。迭代器亦被称为轻量级的容器。
+
+        Q14： Iterator 怎么使用？有什么特点？
+            使用方法：使用容器的iterator方法返回Iterator对象，使用Iterator对象中的hasNext()方法判断容器中有没有元素，
+               使用next()方法获取第一个元素，获取元素都是由next()方法获取。
+            特点：开发人员不需要了解容器的底层结构，就可以实现对容器的遍历。创建的代价小，所以被称为轻量级的容器。
+
+        Q15：Iterator 和 ListIterator 有什么区别？
+            Iterator只能正向遍历集合，可以遍历List、Set集合，适合获取和删除元素。
+            ListIterator支持正向和反向遍历，但只能遍历List集合，适合获取增加修改删除元素
 
     3、多线程
         Q1：

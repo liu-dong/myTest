@@ -3,6 +3,10 @@ package com.dong.spring4.reflect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+/**
+ * 反射
+ * @author 3hld
+ */
 public class ReflectTest {
 
     public static Car initByDefaultConst() throws Throwable {

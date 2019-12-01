@@ -235,46 +235,52 @@ JAVA面试题
             应用场景：
                 AOP、加日志、加权限
 
-        Q4：怎么实现动态代理？
-
-
-        Q5：
-        Q6：
-        Q7：
-        Q8：
-        Q9：
-        Q10：
-        Q11：
-        Q12：
-        Q13：
-        Q14：
-        Q15：
-        Q16：
-        Q17：
+        Q4：怎么实现动态代理？(待回答)
+            首先必须定义一个接口，还要有一个InvocationHandler(将实现接口的类的对象传递给它)处理类。
+            再有一个工具类Proxy(习惯性将其称为代理类，因为调用他的newInstance()可以产生代理对象,
+            其实他只是一个产生代理对象的工具类）。利用到InvocationHandler，拼接代理类源码，
+            将其编译生成代理类的二进制码，利用加载器加载，并将其实例化产生代理对象，最后返回。
 
     5、对象拷贝
-        Q1：
-        Q2：
-        Q3：
-        Q4：
-        Q5：
-        Q6：
-        Q7：
-        Q8：
-        Q9：
-        Q10：
-        Q11：
-        Q12：
-        Q13：
-        Q14：
-        Q15：
-        Q16：
-        Q17：
+        Q1：为什么要使用克隆？
+            想对一个对象进行处理，又想保留原来的数据，这时就需要用到克隆技术了。
+            Java中克隆是针对类的实例。
+
+        Q2：如何实现对象克隆？
+            实现Cloneable接口，并重写clone方法。
+            实现Serializable接口，通过序列化和反序列化实现深度克隆。
+
+        Q3：深拷贝和浅拷贝区别是什么？
+            浅拷贝只是复制了一个引用值，内存地址并未发生改变，一个引用改变了内存值，另一个也随之改变
+            深拷贝同时复制了一个引用值和内存对象。两个引用互不干扰。
 
     6、Java Web模块
-        Q1：
-        Q2：
-        Q3：
+        Q1：jsp 和 servlet 有什么区别？
+            1：jsp经编译后变成了Servlet（JSP的本质就是servlet，jvm不能识别jsp的代码，只能识别java类，
+                web容器就jsp编译为jvm能识别的java类）。
+            2：jsp更多作用于页面显示，servlet更多作用于业务的逻辑控制。
+            3：Servlet没有内置对象，jsp可以通过HttpServletRequest对象和HttpServletResponse对象以及
+                HttpServlet对象获得内置对象。
+            4：jsp是servlet的一种简化，其中的java脚本如何嵌到一个类中由jsp容器完成。而servlet是一个
+                完整的java类，有个service方法作用于对客户端的响应。
+
+        Q2： jsp 有哪些内置对象？作用分别是什么？
+            request：封装客户端的请求，包含get和post请求。
+            response：封装服务器对客户端的响应。
+            session：封装用户的会话。
+            pageContext：通过该对象可以获取其他对象。
+            application：封装服务器运行环境的对象。
+            out：输出服务器响应的输出流对象。
+            config：Web应用的配置对象。
+            page：jsp页面本身（相当于java中的this）
+            exception：封装页面中抛出异常对象
+
+        Q3：说一下 jsp 的 4 种作用域？
+            page：作用于当前页面相关的属性和对象。
+            request：作用于当前请求，可能涉及多个页面。
+            session：作用于当前用户会话，可能涉及多个请求。
+            application：作用于整个web程序，包括所有页面，请求和会话的一个全局作用域。
+
         Q4：
         Q5：
         Q6：

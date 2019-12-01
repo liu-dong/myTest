@@ -1,6 +1,6 @@
 package com.dong.spring4.reflect;
 
-public class Car {
+public class Car implements Cloneable{
 
     private String brand;
 
@@ -44,5 +44,19 @@ public class Car {
 
     public void setMaxSpeed(int maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "brand='" + brand + '\'' +
+                ", color='" + color + '\'' +
+                ", maxSpeed=" + maxSpeed +
+                '}';
     }
 }

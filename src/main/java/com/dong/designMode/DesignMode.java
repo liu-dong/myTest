@@ -1,6 +1,8 @@
 package com.dong.designMode;
 
-import com.dong.designMode.singlePattern.SingleObject;
+import com.dong.designMode.observerPattern.XiaoLi;
+import com.dong.designMode.observerPattern.XiaoMei;
+import com.dong.designMode.observerPattern.XiaoWang;
 
 public class DesignMode {
     public static void main(String[] args) {
@@ -34,10 +36,12 @@ public class DesignMode {
         colorBlue.fill();
         */
 
+/*
 
         //单例模式
-        SingleObject object = SingleObject.getInstance();
+        EagerSingleObject object = EagerSingleObject.getInstance();
         object.showMessage();
+*/
 
 
         /*
@@ -89,5 +93,13 @@ public class DesignMode {
         // 图像不需要从磁盘加载
         image.display();
         */
+
+        //观察者模式
+        XiaoMei xm = new XiaoMei();
+        XiaoWang xw = new XiaoWang();
+        XiaoLi xl = new XiaoLi();
+        xm.addPerson(xw);
+        xm.addPerson(xl);
+        xm.notifyPerson();
     }
 }

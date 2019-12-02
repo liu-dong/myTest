@@ -236,6 +236,13 @@ JAVA面试题
                 AOP、加日志、加权限
 
         Q4：怎么实现动态代理？(待回答)
+            1、创建一个代理类。
+            2、动态代理类中创建一个代理对象。
+            3、创建一个生成代理对象的方法。
+            4、new一个代理实例newProxyInstance(ClassLoader loader, Class<?>[] interfaces,InvocationHandler h)，
+                三个参数分别为：类加载器、需要实现的接口集合、调用处理器（调用代理对象的方法）。
+            5、传入被代理对象实例一个代理对象，调用被代理方法就可以了。
+
             首先必须定义一个接口，还要有一个InvocationHandler(将实现接口的类的对象传递给它)处理类。
             再有一个工具类Proxy(习惯性将其称为代理类，因为调用他的newInstance()可以产生代理对象,
             其实他只是一个产生代理对象的工具类）。利用到InvocationHandler，拼接代理类源码，

@@ -288,9 +288,18 @@ JAVA面试题
             session：作用于当前用户会话，可能涉及多个请求。
             application：作用于整个web程序，包括所有页面，请求和会话的一个全局作用域。
 
-        Q4：
-        Q5：
-        Q6：
+        Q4：session 和 cookie 有什么区别？
+            session：由于http是无状态的协议，所以服务端需要记录用户状态时，就要用某种机制来记录
+                用户状态，session就是这种机制。
+            cookie：服务端要如何识别特定的用户？这是就要用到cookie来存储每个session的特定标识sessionId,
+                所以cookie就是一种保存客户端信息的机制。
+            总结：session是服务端记录用户状态的一种机制，cookie是客户端记录信息的一种机制，也是实现session的一种方式。
+
+        Q5：说一下 session 的工作原理？
+            其实session就是保存在服务器上一个类似于散列表格的文件。里面存有我们需要的信息，存储方式类似
+                Map，键值存储的是sessionId。用户向服务器发送请求是带上sessionId，这样就能从session文件中获取到对应的值。
+
+        Q6：如果客户端禁止 cookie 能实现 session 还能用吗？
         Q7：
         Q8：
         Q9：

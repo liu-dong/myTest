@@ -1,4 +1,4 @@
-package com.dong.designMode.proxyPattern;
+package com.dong.designMode.proxyPattern.jdk;
 
 import java.lang.reflect.Proxy;
 

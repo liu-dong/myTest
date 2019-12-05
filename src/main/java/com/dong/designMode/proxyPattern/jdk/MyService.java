@@ -1,6 +1,7 @@
-package com.dong.designMode.proxyPattern;
+package com.dong.designMode.proxyPattern.jdk;
 
 /**
+ * 接口
  * @author 3hld
  */
 public interface MyService {

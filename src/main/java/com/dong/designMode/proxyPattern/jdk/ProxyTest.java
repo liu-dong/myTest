@@ -1,4 +1,4 @@
-package com.dong.designMode.proxyPattern;
+package com.dong.designMode.proxyPattern.jdk;
 
 /**
  * 代理模式测试类

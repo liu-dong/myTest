@@ -1,5 +1,9 @@
-package com.dong.designMode.proxyPattern;
+package com.dong.designMode.proxyPattern.jdk;
 
+/**
+ * 实现类
+ * @author 3hld
+ */
 public class MyServiceImpl implements MyService {
 
     @Override

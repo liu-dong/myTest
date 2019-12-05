@@ -1,9 +1,6 @@
 package com.dong.socket.one;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -33,8 +30,12 @@ public class SocketServerTest {
             InputStreamReader：是从字节流到字符流的桥
             socket.getInputStream()：返回的是字节流
         */
-        //获取socket里的输入流
-        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        //获取socket里的输入字节流
+        InputStream inputStream = socket.getInputStream();
+        //字节流转换为字符流
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        //字符流添加缓冲
+        BufferedReader reader = new BufferedReader(inputStreamReader);
         //获取socket里的输出流
         PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
         //获取键盘的输入流

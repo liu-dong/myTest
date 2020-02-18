@@ -24,11 +24,10 @@ public class SocketServerTest {
         server.bind(address);
         //接受绑定端口的所有通信请求
         Socket socket = server.accept();
-
         /*
             BufferedReader：从字符输入流读取文本，缓冲字符，以提供字符，数组和行的高效读取。
-            InputStreamReader：是从字节流到字符流的桥
-            socket.getInputStream()：返回的是字节流
+            InputStreamReader：是从字节流到字符流的桥。
+            socket.getInputStream()：返回的是字节流。
         */
         //获取socket里的输入字节流
         InputStream inputStream = socket.getInputStream();
@@ -54,7 +53,5 @@ public class SocketServerTest {
 
             }
         }
-
-
     }
 }

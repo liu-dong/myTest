@@ -252,14 +252,15 @@ public class CurrentDateUtils {
         int currentMonth = c.get(Calendar.MONTH) + 1;
         Date now = null;
         try {
-            if (currentMonth <= 3)
+            if (currentMonth <= 3) {
                 c.set(Calendar.MONTH, 0);
-            else if (currentMonth <= 6)
+            } else if (currentMonth <= 6) {
                 c.set(Calendar.MONTH, 3);
-            else if (currentMonth <= 9)
+            } else if (currentMonth <= 9) {
                 c.set(Calendar.MONTH, 4);
-            else if (currentMonth <= 12)
+            } else if (currentMonth <= 12) {
                 c.set(Calendar.MONTH, 9);
+            }
             c.set(Calendar.DATE, 1);
             now = sdfDateTime.parse(sdfDate.format(c.getTime()) + " 00:00:00");
         } catch (Exception e) {
@@ -299,9 +300,33 @@ public class CurrentDateUtils {
         return now;
     }
 
+    private static Date randomDate(String beginDate,String endDate){
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date start = format.parse(beginDate);
+            Date end = format.parse(endDate);
+
+            if(start.getTime() >= end.getTime()){
+                return null;
+            }
+            long date = random(start.getTime(),end.getTime());
+            return new Date(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static long random(long begin,long end){
+        long rtn = begin + (long)(Math.random() * (end - begin));
+        if(rtn == begin || rtn == end){
+            return random(begin,end);
+        }
+        return rtn;
+    }
 
     public static void main(String[] args) {
-        CurrentDateUtils currentDateUtils = new CurrentDateUtils();
+        /*CurrentDateUtils currentDateUtils = new CurrentDateUtils();
 
         String date = currentDateUtils.getCurrentDate();
         System.out.println(date);
@@ -325,6 +350,11 @@ public class CurrentDateUtils {
         System.out.println(quarter);
 
         int year = currentDateUtils.getCurrentYear();
-        System.out.println(year);
+        System.out.println(year);*/
+
+        for (int i=0;i<999;i++){
+            Date date = randomDate("2020-02-01","2020-02-28");
+            System.out.println(new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date));
+        }
     }
 }

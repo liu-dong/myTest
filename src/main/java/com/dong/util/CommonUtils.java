@@ -7,7 +7,7 @@ public class CommonUtils {
     public static void main(String[] args) {
         getRandomNumber();
 
-/*测试分支*/
+/*测试分支11111*/
     }
 
     public static void getRandomNumber(){

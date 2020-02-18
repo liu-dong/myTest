@@ -6,7 +6,7 @@ public class CommonUtils {
 
     public static void main(String[] args) {
         getRandomNumber();
-/*测试push后撤回*/
+/*测试*/
 
     }
 

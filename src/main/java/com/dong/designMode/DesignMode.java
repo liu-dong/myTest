@@ -1,14 +1,12 @@
 package com.dong.designMode;
 
-import com.dong.designMode.observerPattern.XiaoLi;
-import com.dong.designMode.observerPattern.XiaoMei;
-import com.dong.designMode.observerPattern.XiaoWang;
+import com.dong.designMode.facadePattern.ShapeMaker;
 
 public class DesignMode {
     public static void main(String[] args) {
 
-        /*
         //工厂模式
+        /*
         ShapeFactory shapeFactory = new ShapeFactory();
         Shape shapeRectangle = shapeFactory.getShape("rectangle");
         shapeRectangle.draw();
@@ -18,8 +16,8 @@ public class DesignMode {
         shapeCircle.draw();
         */
 
-        /*
         //抽象工厂模式
+        /*
         AbstractFactory shapeFactory = FactoryProduct.getFactory("shape");
         Shape shapeRectangle = shapeFactory.getShape("rectangle");
         Shape shapeSquare = shapeFactory.getShape("square");
@@ -36,16 +34,14 @@ public class DesignMode {
         colorBlue.fill();
         */
 
-/*
 
         //单例模式
-        EagerSingleObject object = EagerSingleObject.getInstance();
-        object.showMessage();
-*/
+        /*EagerSingleObject object = EagerSingleObject.getInstance();
+        object.showMessage();*/
 
 
-        /*
         //建造者模式
+        /*
         MealBuilder mealBuilder = new MealBuilder();//实例化一个选择食物套餐类型的对象
 
         Meal vegMeal = mealBuilder.prepareVegMeal();//选择一个素食套餐
@@ -59,8 +55,8 @@ public class DesignMode {
         System.out.println("总共花费：" + nonMeal.getCost());
         */
 
-        /*
         //适配器模式
+        /*
         AudioPlayer audioPlayer = new AudioPlayer();
         audioPlayer.play("mp3", "beyond the horizon.mp3");
         audioPlayer.play("mp4", "alone.mp4");
@@ -68,8 +64,9 @@ public class DesignMode {
         audioPlayer.play("avi", "mind me.avi");
         */
 
-        /*
+
         //装饰器模式
+        /*
         Shape circle = new Circle();
         ShapeDecorator redCircle = new RedShapeDecorator(new Circle());
         ShapeDecorator redRectangle = new RedShapeDecorator(new Rectangle());
@@ -85,9 +82,9 @@ public class DesignMode {
         redRectangle.draw();
         */
 
-        /*
+
         //代理模式
-        Image image = new ProxyImage("dong.gif");
+        /*Image image = new ProxyImage("dong.gif");
         // 图像将从磁盘加载
         image.display();
         // 图像不需要从磁盘加载
@@ -95,11 +92,21 @@ public class DesignMode {
         */
 
         //观察者模式
+        /*
         XiaoMei xm = new XiaoMei();
         XiaoWang xw = new XiaoWang();
         XiaoLi xl = new XiaoLi();
         xm.addPerson(xw);
         xm.addPerson(xl);
         xm.notifyPerson();
+        */
+
+        //外观模式
+        ShapeMaker shapeMaker = new ShapeMaker();
+
+        shapeMaker.drawRectangle();
+        shapeMaker.drawSquare();
+        shapeMaker.drawCircle();
+
     }
 }

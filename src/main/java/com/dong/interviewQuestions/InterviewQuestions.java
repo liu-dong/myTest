@@ -1,18 +1,17 @@
 package com.dong.interviewQuestions;
 
-import java.util.*;
-
 /**
- *
  * @author 3hld
  */
 public class InterviewQuestions {
 
 
     public static void main(String[] args) {
+//        stringTest();
 
+        System.out.println(hashCode1());
 
-        final int num = 2;
+        /*final int num = 2;
 //        static String str = "liudong";
         HashMap hashMap = new HashMap();
         TreeMap treeMap = new TreeMap();
@@ -25,15 +24,15 @@ public class InterviewQuestions {
 //        Array array = new Array();
         System.out.println(list.toString());
         System.out.println(list.iterator().next());
-//        num = 4;
+//        num = 4;*/
 
 
-        /*SString s = "liudong";
+        /*String s = "liudong";
         String s1 = "liudong";
         String s2 = new String("liudong");
         String s3 = new String("liudong");
 
-        ystem.out.println(s==s1);
+        System.out.println(s==s1);
         System.out.println(s.equals(s1));
         System.out.println(s==s2);
         System.out.println(s.equals(s2));
@@ -166,9 +165,9 @@ public class InterviewQuestions {
     }
 
     /**
-        数组list互转
+     * 数组list互转
      */
-    public void arrayListCast(){
+    public void arrayListCast() {
         /*String[] arr = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
         List<String> list = new ArrayList<>();
         Collections.addAll(list, arr);
@@ -177,16 +176,35 @@ public class InterviewQuestions {
         System.out.println("数组转列表1：" + list);
         System.out.println("数组转列表2：" + Arrays.asList(arr));
         System.out.println("列表转数组：" + Arrays.toString(list.toArray()));//.getClass().isArray()判断是否是数组*/
-
     }
 
-    public void stringTest(){
-        String str1 = new String("liudong");
-        String str2 = new String("liudong");
+    public static void stringTest() {
+        Object str1 = "1";
+        String str2 = new String("1");
+        String str3 = "1";
 
 //        System.out.println(str1);
-        System.out.println(str1);
+        System.out.println("result1：" + "1dfaldjfal".equals(str1));
+        System.out.println("result2：" + "1dfaldjfal".equals(str2));
+        System.out.println(str2 == str1);
         System.out.println(str2.equals(str1));
+        System.out.println(str3 == str1);
+        System.out.println(str3.equals(str1));
+    }
+    static int hash = 0;
+    static char value[] = {'a','a','a'};
+
+    public static int hashCode1() {
+        int h = hash;
+        if (h == 0 && value.length > 0) {
+            char val[] = value;
+
+            for (int i = 0; i < value.length; i++) {
+                h = 31 * h + val[i];
+            }
+            hash = h;
+        }
+        return h;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.dong.designMode;
 
+import com.dong.designMode.adapterPattern.AudioPlayer;
 import com.dong.designMode.facadePattern.ShapeMaker;
 
 public class DesignMode {
@@ -56,13 +57,11 @@ public class DesignMode {
         */
 
         //适配器模式
-        /*
         AudioPlayer audioPlayer = new AudioPlayer();
         audioPlayer.play("mp3", "beyond the horizon.mp3");
         audioPlayer.play("mp4", "alone.mp4");
         audioPlayer.play("vlc", "far far away.vlc");
         audioPlayer.play("avi", "mind me.avi");
-        */
 
 
         //装饰器模式

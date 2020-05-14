@@ -1,0 +1,10 @@
+	@ResponseBody
+	@RequestMapping(value = "/saveShutdownAdvice",produces="application/json;charset=UTF-8")
+	public ActionResult<ShutdownAdvice> saveShutdownAdvice(HttpServletRequest request,String type, SuperviseTestBean superviseTestBean) {
+		String str = RestUtil.JsonReq(request);
+		JSONObject jsonObject = (JSONObject) JSONObject.parse(str);
+		try {
+			BeanUtilEx.copyProperties(jsonObject, superviseTestBean);
+		} catch (IllegalAccessException | InvocationTargetException e1) {
+			e1.printStackTrace();
+		}

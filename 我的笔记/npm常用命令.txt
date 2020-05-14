@@ -1,0 +1,8 @@
+npm config get registry ——查看npm源
+
+npm config set registry https://registry.npm.taobao.org ——设置npm为淘宝源
+
+-- 创建vue-cli项目
+vue init webpack->npm install->npm run dev
+
+

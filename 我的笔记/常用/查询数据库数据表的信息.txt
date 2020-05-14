@@ -1,0 +1,4 @@
+
+-- 查询数据库数据表的信息
+
+SELECT TABLE_NAME, TABLE_COMMENT, TABLE_TYPE, `ENGINE`, VERSION, TABLE_ROWS, CREATE_TIME, UPDATE_TIME FROM information_schema. TABLES WHERE table_schema = '当前数据库名'

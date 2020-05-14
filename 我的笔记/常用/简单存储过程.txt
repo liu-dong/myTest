@@ -1,0 +1,34 @@
+
+存储过程
+
+
+修改  修饰符 名称
+ALTER PROC sp_DEL_SK_BAS_LINK_GCETP 
+AS 
+BEGIN
+	
+	DELETE FROM SK_BAS_LINK_GCETP; -- 清空四库中工程企业中间表
+	
+	DELETE FROM SK_BAS_LINK_GCETP_DEL; -- 清空四库中工程企业中间表需要删除表的数据
+	
+	INSERT SK_BAS_LINK_GCETP SELECT *  FROM OPENQUERY (sk_orcel, 'select * from SAAS_STANDARD.BAS_LINK_GCETP'); -- 插入四库中工程企业中间表的数据
+		
+	INSERT SK_BAS_LINK_GCETP_DEL -- 插入四库中工程企业中间表需要删除的数据
+	SELECT
+	t1.ID,t1.ETP_ID,t1.GC_ID
+	FROM
+		SK_BAS_LINK_GCETP t1 
+	WHERE
+		NOT EXISTS (
+		SELECT
+			1 
+		FROM
+			( SELECT a.projectID gc_id, b.PK etp_id FROM projectListUnit a INNER JOIN tab_unit b ON a.unitid= b.unitID ) t2 
+		WHERE
+			t1.etp_id= t2.etp_id 
+		AND t1.gc_id= t2.gc_id 
+		);
+		-- 修改备注字段为标识
+		UPDATE OPENQUERY ( sk_orcel, 'select ID, GC_ID,ETP_ID, BEIZHU from SAAS_STANDARD.BAS_LINK_GCETP' )  SET BEIZHU = '1'
+		WHERE  ID IN (SELECT ID FROM SK_BAS_LINK_GCETP_DEL)
+END;

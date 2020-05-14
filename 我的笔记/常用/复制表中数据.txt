@@ -1,0 +1,5 @@
+INSERT INTO bank_info ( CODE, NAME ) SELECT CODE
+,
+NAME 
+FROM
+	bank_info1111

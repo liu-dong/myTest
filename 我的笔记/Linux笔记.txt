@@ -1,0 +1,107 @@
+一、基本命令
+
+    关机重启
+        sync：把内存的数据同步到磁盘
+        shutdown -h now ：立刻关机
+        shutdown -h 1: 一分钟后关机
+        shutdown -r now：立刻重启
+        halt：关机
+        reboot：现在重新启动计算机
+
+    用户
+        useradd 用户名：添加用户
+        useradd - g 用户组 用户名：添加用户到用户组
+        usermod -g 用户组 用户名：修改用户的用户组
+        passwd 用户名：指定/修改密码
+        userdel 用户名：删除用户（保留用户目录）
+        userdel -r 用户名：删除用户（并删除用户目录）
+        su 用户名：切换用户
+        exit：返回到原来目录
+
+    用户组
+        groupadd 用户组：添加用户组
+        groupdel 用户组：删除用户组
+        cat /etc/passwd：查看所有用户
+        cat /etc/group：查看所有用户组
+
+    常用操作
+        pwd：显示当前路径
+        mkdir 目录：创建目录
+        mkdir -p 目录：创建多级目录
+        rmdir 目录：删除空目录
+        rm 文件/文件夹：删除文件
+        rm -rf 目录：删除非空目录
+        mv 源文件 目标文件夹：移动文件
+		
+        touch 文件名：创建文件（可以创建多个文件）
+        cp 源文件 目标文件：复制文件
+        cp -r 源文件夹 目标文件：复制文件夹
+        \cp：强制复制
+        cat 文件名：查看文件内容（只读）
+        cat -n 文件名 | more ：分页显示行号查看文件
+        less/more 文件名：分页查看文件（less用于查询较大文件）
+		df -h :查询磁盘占用情况
+		df -h /目录：查询目录占用情况
+		steup 查询有哪些服务
+		ls -l /etc/init.d ：查询有些服务
+		
+        ls -l > 文件：将列表内容写入文件
+        ls -al >> 文件：将列表内容追加到文件
+        cat 文件1>文件2：将文件1覆盖到文件2
+
+        echo：输出内容到控制台
+        head：默认查看文件前10行
+        head -n 5：查看文件前5行
+        tail：默认查看文件的后10行
+        tail -n 5 查看文件的后5行
+        tail -f：实时更新文件内容
+
+        In -s 源文件/源文件夹 链接名：给原文件创建一个软链接（类似快捷方式）
+        history：查看历史命令
+
+        rpm -e RPM包的名称：卸载
+        rpm -e --nodeps RPM包的名称：强制删除卸载
+
+        find [路径] [查询条件]：查询某文件，例 find / -name nginx* （查询根目录下所有以nginx开头的文件）
+
+
+
+
+二、常用
+
+    防火墙
+        1、开放端口
+        firewall-cmd --zone=public --add-port=5672/tcp --permanent   # 开放5672端口
+        firewall-cmd --zone=public --remove-port=5672/tcp --permanent  #关闭5672端口
+        firewall-cmd --reload   # 配置立即生效
+        2、查看防火墙所有开放的端口
+        firewall-cmd --zone=public --list-ports
+        3.、关闭防火墙
+        如果要开放的端口太多，嫌麻烦，可以关闭防火墙，安全性自行评估
+        systemctl stop firewalld.service
+        4、查看防火墙状态
+        firewall-cmd --state
+        5、查看监听的端口
+        netstat -lnptfirewall-cmd --state
+		
+    共享文件夹
+        vmware-hgfsclient 查看共享文件夹
+        vmhgfs-fuse /mnt/hgfs/ 刷新挂载的共享文件夹
+
+        tar zxvf  解压
+        show global variables like "%datadir%"; 查看数据库数据存储位置
+
+	nginx启动命令
+		1、cd usr/local/nginx/sbin
+		2、./nginx
+		
+	springboot部署启动命令
+		nohup java -jar myspringboot-0.0.1-SNAPSHOT.jar --server.port=8081 &
+
+
+
+三、工具
+	docker	
+		1、docker ps：查看正在运行的容器；
+
+

@@ -1,0 +1,13 @@
+
+	/*var img = $("#"+id);
+	var oWidth=img.width(); //取得图片的实际宽度
+	var oHeight=img.height(); //取得图片的实际高度
+	$("#"+id).live("click",function(){
+		$(this).toggle(function(){ 
+			img.width(oWidth + 300);
+			img.height(oHeight + 300/oWidth*oHeight); 
+		}, function(){ 
+			 img.width(oWidth);
+			 img.height(oHeight); 
+		}).trigger('click');  
+	});*/

@@ -1,0 +1,25 @@
+union/union all运算：将查询的返回组合成一个结果， union all不过滤重复
+
+
+	SELECT product_id FROM order_items
+	UNION
+	SELECT product_id FROM inventories;
+ 	
+	SELECT location_id  FROM locations 
+	UNION ALL 
+	SELECT location_id  FROM departments;
+
+
+intersect运算：返回查询结果中相同的部分。
+	
+	SELECT product_id FROM inventories
+	INTERSECT
+	SELECT product_id FROM order_items;
+
+
+
+minus运算：返回在第一个查询结果中与第二个查询结果不相同的那部分行记录。
+
+	SELECT product_id FROM inventories
+	MINUS
+	SELECT product_id FROM order_items;

@@ -1,0 +1,2 @@
+
+DELETE FROM bas_ry_copy WHERE etp_id NOT in (SELECT ETP_ID FROM bas_etp )

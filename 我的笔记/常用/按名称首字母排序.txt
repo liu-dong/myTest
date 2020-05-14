@@ -1,0 +1,2 @@
+//°´Ãû³ÆÊ××ÖÄ¸ÅÅĞò
+		sql.append(" order by CONVERT(be.NAME USING gbk) asc");

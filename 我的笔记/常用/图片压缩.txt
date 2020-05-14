@@ -1,0 +1,89 @@
+//调整图片大小
+	public static String updateImageSize(int newWidth, int newHeight, String path) throws IOException{
+		
+		BufferedInputStream in = null;
+		int index = path.lastIndexOf("\\");//获取最后一个\的位置（用于定位到最后一层）
+		int index2 = path.substring(0,index).lastIndexOf("\\");
+		//添加一层文件夹/bak
+//		String bakPath = path.substring(0,index2) + "\\bak" + path.substring(index2); 
+		
+		try {
+			in = new BufferedInputStream(new FileInputStream(path));
+			//字节流转图片对象
+			Image bi = ImageIO.read(in);
+			//构建图片流
+			BufferedImage tag = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+			//绘制改变尺寸后的图
+			tag.getGraphics().drawImage(bi, 0, 0, newWidth, newHeight, null);
+			//输出流
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("D:\\guo2.png"));
+			ImageIO.write(tag, "PNG", out);
+			in.close();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+package com.hhh.demo.codegen.controller;
+
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
+public class Testasd {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try {
+			zoomImage(50, 30);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	/*
+     * 图片缩放,w，h为缩放的目标宽度和高度
+     * src为源文件目录，dest为缩放后保存目录
+     */
+    public static void zoomImage(int w,int h) throws Exception {
+    	String src ="d://222.png";
+        String dest ="d://333.png";
+        double wr=0,hr=0;
+        File srcFile = new File("d://222.png");
+        File destFile = new File("d://333.png");
+
+        BufferedImage bufImg = ImageIO.read(srcFile); //读取图片
+        Image Itemp = bufImg.getScaledInstance(w, h, bufImg.SCALE_SMOOTH);//设置缩放目标图片模板
+        
+        wr=w*1.0/bufImg.getWidth();     //获取缩放比例
+        hr=h*1.0 / bufImg.getHeight();
+
+        AffineTransformOp ato = new AffineTransformOp(AffineTransform.getScaleInstance(wr, hr), null);
+        Itemp = ato.filter(bufImg, null);
+        try {
+            ImageIO.write((BufferedImage) Itemp,dest.substring(dest.lastIndexOf(".")+1), destFile); //写入缩减后的图片
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+}

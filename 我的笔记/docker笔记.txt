@@ -1,0 +1,15 @@
+概念：
+	仓库： 别人做好的现成的镜像，都放在仓库里
+	镜像： 自己要用哪个镜像，就先拉到本地来。镜像就相当于还没激活的容器。
+	容器： 容器就是跑起来的镜像，就是一个完整的工作环境
+
+1、启动docker
+	systemctl start docker.service
+	systemctl status docker.service
+
+docker start/stop/restart 容器名/容器id：启动/停止/重启
+
+0.0.0.0:32769->5000/tcp 
+Docker 开放了 5000 端口（默认 Python Flask 端口）映射到主机端口 32769 上。
+
+docker rm -f 容器名/容器id：强制删除容器

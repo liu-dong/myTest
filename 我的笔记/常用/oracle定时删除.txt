@@ -1,0 +1,22 @@
+CREATE OR REPLACE
+PROCEDURE "DELETE_SYS_RUNLOG" AS
+--Oracle定时器
+DECLARE /*声明 ，任务开始 */
+  job number; /*系统会自动分配一个任务号码，作为标识，相当于表中的主键 */
+BEGIN
+  dbms_job.SUBMIT(  /* 格式：任务名.submit(执行的内容，初次执行时间，执行频率); */
+        JOB => job,  /*自动生成JOB_ID*/  
+        WHAT => 'DELETE FROM SYS_RUNLOG WHERE LOGDATETIME<TRUNC(SYSDATE)-7;',  /*需要执行的存储过程名称或SQL语句*/  
+        NEXT_DATE => sysdate+1/(24*60),  /*初次执行时间-下一个1分钟*/  
+        Interval => TRUNC(sysdate) + 1 +0 / (24) /*每天的凌晨0点执行一次*/
+      );  
+  COMMIT; /*提交任务 */
+END; /*结束 */
+
+
+CREATE OR REPLACE 
+PROCEDURE "DELETE_SYS_RUNLOG" AS
+/*删除表SYS_RUNLOG七天前的数据*/
+BEGIN
+  DELETE FROM SYS_RUNLOG WHERE LOGDATETIME<TRUNC(SYSDATE)-7;
+END; /*结束 */

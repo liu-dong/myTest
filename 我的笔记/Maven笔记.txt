@@ -1,0 +1,14 @@
+Maven一键运行项目命令：
+mvn tomcat:run
+
+Clean   清理编译的文件
+
+Compile 编译了主目录的文件
+
+Test  编译并运行了test目录的代码
+
+Package 打包 
+
+Install 就是把项目发布到本地仓库
+
+Compile   test  package  install  deploy（发布到私服）（运行顺序）

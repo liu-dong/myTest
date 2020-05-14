@@ -1,0 +1,35 @@
+复选框控制下拉列表
+
+
+
+.html
+
+<div class="form-group">
+	<label class="col-xs-2 control-label">是否对外<span style="color: red;"> *</span></label>
+	<div class="col-xs-4">
+	<input type="checkbox" name="whether" id="whether" value="0" checked="checked" onchange="show()" validateType="notempty" msg="请选择是否勾选!"/>
+	</div>
+	<label class="col-xs-2 control-label">推送平台<span style="color: red;"> *</span></label>
+	<div class="col-xs-4">
+	<select id="pushPlatform" name="pushPlatform" class="form-control col-sm-12" validateType="notempty" msg="请选择系统!">
+	<option value="">-- 请选择 --</option>
+	</select>
+	</div>
+</div>
+
+
+
+.js
+
+//选择是否对外推送平台
+function show(){
+	var check = document.getElementById("whether");
+	debugger
+	if(check.checked){
+		document.getElementById("pushPlatform").disabled=false;
+	}
+	else{
+		document.getElementById("pushPlatform").disabled=true;
+		check.value=1;
+	}
+}

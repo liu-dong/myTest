@@ -1,0 +1,12 @@
+USE information_schema;
+
+SELECT
+	table_name,
+	table_rows
+FROM
+	TABLES
+WHERE
+	TABLE_SCHEMA = 'aqyth'
+ORDER BY
+	table_rows DESC;
+

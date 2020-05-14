@@ -1,0 +1,11 @@
+oracle 修改语句 
+	将channel_number字段里面的值和gwkind字段里面的值交换
+
+解决：
+?
+
+	update 表 t set t.channel_number=t.gwkind,t.gwkind=t.channel_number
+?where t.stat_time='201707'
+
+
+	oracle 有undo 支持两个杯子互换水的，不需要第三个杯子。

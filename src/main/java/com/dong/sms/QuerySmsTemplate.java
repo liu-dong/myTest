@@ -15,7 +15,7 @@ import com.aliyuncs.profile.DefaultProfile;
  */
 public class QuerySmsTemplate {
     public static void main(String[] args) {
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4FrVJ4E2pxsz6VXLCxzs", "YSrywQ4Kr09pEKUravcY27NtNmvThf");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAldI4FrVJ4E2pxsz6VXLCxzs", "YSldrywQ4Kr09pEKUravcY27NtNmvThf");
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();

@@ -7,13 +7,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 /**
+ * 
  * @author LD
  * @date 2020/6/4 9:27
  */
 public class MyFontImage {
     public static void createFontImg(String path) {
         /*定义在图片中想展示的内容*/
-        String base = "智障";
+        String base = "我爱你";
         try {
             /*读取想要转换的图片
             read() 方法回返回一个 BufferedImage 类型的图片缓存流。
@@ -43,14 +44,14 @@ public class MyFontImage {
                 }
             }
             /*图片重新绘制，并输出*/
-            ImageIO.write(newImage, "JPG", new FileOutputStream("F:\\1234.jpg"));
+            ImageIO.write(newImage, "JPG", new FileOutputStream("F:\\myLove.jpg"));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        MyFontImage.createFontImg("E:\\Tencent\\1234.jpg");
+        MyFontImage.createFontImg("E:\\LD\\我的相册\\MyLove\\myLove.jpg");
         System.out.println("OK");
     }
 }

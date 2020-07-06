@@ -1,7 +1,8 @@
 package com.dong.designMode;
 
-import com.dong.designMode.adapterPattern.AudioPlayer;
-import com.dong.designMode.facadePattern.ShapeMaker;
+import com.dong.designMode.observerPattern.XiaoLi;
+import com.dong.designMode.observerPattern.XiaoMei;
+import com.dong.designMode.observerPattern.XiaoWang;
 
 public class DesignMode {
     public static void main(String[] args) {
@@ -57,11 +58,11 @@ public class DesignMode {
         */
 
         //适配器模式
-        AudioPlayer audioPlayer = new AudioPlayer();
+        /*AudioPlayer audioPlayer = new AudioPlayer();
         audioPlayer.play("mp3", "beyond the horizon.mp3");
         audioPlayer.play("mp4", "alone.mp4");
         audioPlayer.play("vlc", "far far away.vlc");
-        audioPlayer.play("avi", "mind me.avi");
+        audioPlayer.play("avi", "mind me.avi");*/
 
 
         //装饰器模式
@@ -91,21 +92,22 @@ public class DesignMode {
         */
 
         //观察者模式
-        /*
         XiaoMei xm = new XiaoMei();
         XiaoWang xw = new XiaoWang();
         XiaoLi xl = new XiaoLi();
-        xm.addPerson(xw);
-        xm.addPerson(xl);
-        xm.notifyPerson();
-        */
+        xm.attachObserver(xw);
+        xm.attachObserver(xl);
+        xm.notifyObservers("有人打游戏吗？");
+
+        xm.detachObserver(xw);
+        xm.notifyObservers("打完游戏去吃饭吗？");
 
         //外观模式
-        ShapeMaker shapeMaker = new ShapeMaker();
-
-        shapeMaker.drawRectangle();
-        shapeMaker.drawSquare();
-        shapeMaker.drawCircle();
+//        ShapeMaker shapeMaker = new ShapeMaker();
+//
+//        shapeMaker.drawRectangle();
+//        shapeMaker.drawSquare();
+//        shapeMaker.drawCircle();
 
     }
 }

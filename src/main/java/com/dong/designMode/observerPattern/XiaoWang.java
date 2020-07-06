@@ -1,6 +1,6 @@
 package com.dong.designMode.observerPattern;
 
-public class XiaoWang implements Person {
+public class XiaoWang implements Observer {
 
     private String name = "小王";
     @Override

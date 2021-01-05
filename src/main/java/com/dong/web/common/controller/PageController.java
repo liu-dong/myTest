@@ -16,7 +16,7 @@ public class PageController {
 
     @RequestMapping(value = "/goFileUpload")
     public String goFileUpload(){
-        return "/uploadAndDownload/fileUpload.html";
+        return "/uploadAndDownload/fileUpload";
     }
 
     //    @RequestMapping(value = "{folder}")

@@ -162,6 +162,12 @@
             <version>6.8.7</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.54</version>
+        </dependency>
+
         <!--使用spring boot+WebSocket 实现定时消息推送（基于注解）-->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>

@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Security;
+import java.util.Base64;
 
 /**
  * @author LD
@@ -79,7 +80,8 @@ public class DES3 {
         System.out.println("加密前的字符串:" + szSrc);
         byte[] encoded = encryptMode(keyBytes, szSrc.getBytes());
         assert encoded != null;
-        System.out.println("加密后的字符串:" + new String(encoded));
+        String s = Base64.getEncoder().encodeToString(encoded);
+        System.out.println("加密后的字符串:" + s);
         byte[] srcBytes = decryptMode(keyBytes, encoded);
         assert srcBytes != null;
         System.out.println("解密后的字符串:" + (new String(srcBytes)));

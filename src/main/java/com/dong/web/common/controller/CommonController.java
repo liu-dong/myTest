@@ -4,6 +4,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -38,6 +39,7 @@ public class CommonController {
      * @throws IOException
      */
     @RequestMapping(value = "/uploadFirst")
+    @ResponseBody
     public Map<String, Object> uploadFirst(MultipartFile file) throws IllegalStateException, IOException {
         long startTime = System.currentTimeMillis();
         Map<String, Object> result = new HashMap<>();

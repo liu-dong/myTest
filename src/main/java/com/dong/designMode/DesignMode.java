@@ -1,22 +1,21 @@
 package com.dong.designMode;
 
-import com.dong.designMode.observerPattern.XiaoLi;
-import com.dong.designMode.observerPattern.XiaoMei;
-import com.dong.designMode.observerPattern.XiaoWang;
+import com.dong.designMode.strategyPattern.Context;
+import com.dong.designMode.strategyPattern.OperationAdd;
+import com.dong.designMode.strategyPattern.OperationMultiply;
+import com.dong.designMode.strategyPattern.OperationSubtract;
 
 public class DesignMode {
     public static void main(String[] args) {
 
         //工厂模式
-        /*
-        ShapeFactory shapeFactory = new ShapeFactory();
+        /*ShapeFactory shapeFactory = new ShapeFactory();
         Shape shapeRectangle = shapeFactory.getShape("rectangle");
         shapeRectangle.draw();
         Shape shapeSquare = shapeFactory.getShape("square");
         shapeSquare.draw();
         Shape shapeCircle = shapeFactory.getShape("circle");
-        shapeCircle.draw();
-        */
+        shapeCircle.draw();*/
 
         //抽象工厂模式
         /*
@@ -92,7 +91,7 @@ public class DesignMode {
         */
 
         //观察者模式
-        XiaoMei xm = new XiaoMei();
+        /*XiaoMei xm = new XiaoMei();
         XiaoWang xw = new XiaoWang();
         XiaoLi xl = new XiaoLi();
         xm.attachObserver(xw);
@@ -100,7 +99,7 @@ public class DesignMode {
         xm.notifyObservers("有人打游戏吗？");
 
         xm.detachObserver(xw);
-        xm.notifyObservers("打完游戏去吃饭吗？");
+        xm.notifyObservers("打完游戏去吃饭吗？");*/
 
         //外观模式
 //        ShapeMaker shapeMaker = new ShapeMaker();
@@ -109,5 +108,15 @@ public class DesignMode {
 //        shapeMaker.drawSquare();
 //        shapeMaker.drawCircle();
 
+        // 策略模式
+        Context context = new Context(new OperationAdd());
+        System.out.println("10 + 5 = " + context.executeStrategy(10, 5));
+
+        context = new Context(new OperationSubtract());
+        System.out.println("10 - 5 = " + context.executeStrategy(10, 5));
+
+        context = new Context(new OperationMultiply());
+        System.out.println("10 * 5 = " + context.executeStrategy(10, 5));
     }
 }
+

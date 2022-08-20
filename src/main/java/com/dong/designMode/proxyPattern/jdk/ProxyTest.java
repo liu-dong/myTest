@@ -19,5 +19,4 @@ public class ProxyTest{
         proxy.hello();
         proxy.hi();
     }
-
 }

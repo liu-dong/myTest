@@ -7,7 +7,7 @@ import java.awt.*;
  * @author liudong 2022/8/23
  */
 public class Parcel1 {
-    class Contents{
+    public class Contents{
         private int i = 11;
         public int value(){
             return i;

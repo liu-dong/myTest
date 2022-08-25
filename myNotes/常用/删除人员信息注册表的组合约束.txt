@@ -1,1 +1,0 @@
-ALTER TABLE biz_person_reg DROP INDEX GROUP_ID;

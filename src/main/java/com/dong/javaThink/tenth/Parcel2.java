@@ -46,12 +46,4 @@ public class Parcel2 {
         Destination d = to(dest);
         System.out.println(d.readLabel());
     }
-
-    public static void main(String[] args) {
-        Parcel2 p = new Parcel2();
-        p.ship("Tasmania");
-        Parcel2 q = new Parcel2();
-        Contents contents = q.contents();
-        Destination borneo = q.to("Borneo");
-    }
 }

@@ -10,14 +10,14 @@ enum Explore {HEER, THERE}
 
 public class Reflection {
 
-    public void analyze(Class<?> enumClass){
+    public static Set<String> analyze(Class<?> enumClass){
 
+        return null;
     }
 
     public static void main(String[] args) {
 
         Set<String> exploreMethods = analyze(Explore.class);
         Set<String> enumMethods = analyze(Enum.class);
-        System.out.println("------------Analyzing " + e);
     }
 }

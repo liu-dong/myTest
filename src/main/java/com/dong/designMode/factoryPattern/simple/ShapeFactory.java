@@ -1,4 +1,4 @@
-package com.dong.designMode.factoryPattern;
+package com.dong.designMode.factoryPattern.simple;
 
 import com.dong.designMode.abstractFactoryPattern.AbstractFactory;
 import com.dong.designMode.abstractFactoryPattern.Color;

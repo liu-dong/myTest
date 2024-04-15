@@ -1,6 +1,6 @@
 package com.dong.designMode.decoratorPattern;
 
-import com.dong.designMode.factoryPattern.Shape;
+import com.dong.designMode.factoryPattern.simple.Shape;
 
 /**
  * 创建实现了 Shape 接口的抽象装饰类

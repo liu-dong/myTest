@@ -1,6 +1,6 @@
 package com.dong.designMode.abstractFactoryPattern;
 
-import com.dong.designMode.factoryPattern.ShapeFactory;
+import com.dong.designMode.factoryPattern.simple.ShapeFactory;
 
 public class FactoryProduct {
 

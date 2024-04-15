@@ -1,4 +1,4 @@
-package com.dong.designMode.factoryPattern;
+package com.dong.designMode.factoryPattern.method;
 
 public class Square implements Shape {
     public void draw() {

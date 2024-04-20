@@ -1,8 +1,6 @@
 package com.dong.designMode.factoryPattern.method;
 
 
-import com.dong.designMode.factoryPattern.simple.Shape;
-
 /**
  * @author liudong 2024/4/15
  */
@@ -17,6 +15,4 @@ public class ShapeClient {
     public Shape create() {
         return factory.createShape();
     }
-
-
 }

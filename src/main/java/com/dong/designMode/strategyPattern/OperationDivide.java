@@ -1,12 +1,11 @@
 package com.dong.designMode.strategyPattern;
 
 /**
- * @author liudong 2022/3/12
+ * @author liudong 2024/4/21
  */
-public class OperationAdd implements OperationStrategy {
-
+public class OperationDivide implements OperationStrategy{
     @Override
     public int doOperation(int num1, int num2) {
-        return num1 + num2;
+        return num1 / num2;
     }
 }

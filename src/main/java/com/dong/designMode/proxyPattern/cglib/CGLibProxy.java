@@ -15,18 +15,19 @@ import java.lang.reflect.Method;
  */
 public class CGLibProxy implements MethodInterceptor {
 
-    /**
-     * 允许为非接口类型创建一个Java代理
-     * Enhancer动态创建了给定类型的子类但是拦截了所有的方法
-     */
-    private Enhancer enhancer = new Enhancer();
 
     /**
      * 为一个类创建动态代理对象
+     *
      * @param clazz
      * @return
      */
-    public Object getProxy(Class clazz) {
+    public Object getProxy(Class<?> clazz) {
+        /*
+          允许为非接口类型创建一个Java代理
+          Enhancer动态创建了给定类型的子类但是拦截了所有的方法
+         */
+        Enhancer enhancer = new Enhancer();
         // 设置代理目标
         enhancer.setSuperclass(clazz);
         // 设置回调对象，在调用中拦截对目标方法的调用

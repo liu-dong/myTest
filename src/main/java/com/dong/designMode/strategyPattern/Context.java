@@ -5,13 +5,13 @@ package com.dong.designMode.strategyPattern;
  */
 public class Context {
 
-    private Strategy strategy;
+    private OperationStrategy operationStrategy;
 
-    public Context(Strategy strategy){
-        this.strategy = strategy;
+    public Context(OperationStrategy operationStrategy){
+        this.operationStrategy = operationStrategy;
     }
 
     public int executeStrategy(int num1, int num2){
-        return strategy.doOperation(num1, num2);
+        return operationStrategy.doOperation(num1, num2);
     }
 }
